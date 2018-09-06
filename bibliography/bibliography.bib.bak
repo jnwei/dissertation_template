@@ -93,7 +93,7 @@ url = {http://papers.nips.cc/paper/5954-convolutional-networks-on-graphs-for-lea
 @article{Chen2008SynthExplore,
 author = { Jonathan H. Chen and Pierre Baldi},
 title = {Synthesis Explorer: A Chemical Reaction Tutorial System for Organic Synthesis Design and Mechanism Prediction},
-journal = {J. Chem. Educ.},
+journal = {Journal of Chemical Education},
 volume = {85},
 number = {12},
 pages = {1699},
