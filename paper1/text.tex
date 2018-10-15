@@ -24,7 +24,7 @@ We show the results of our prediction method on 16 basic reactions of alkylhalid
 \begin{figure}
 \begin{center}
 \includegraphics[width=0.9\columnwidth]{Overview}
-\caption{An overview of our method for predicting reaction type and products. A reaction fingerprint, made from concatenating the fingerprints of reactant and reagent molecules, is the inputs for a neural network that predicts the probability of 17 different reaction types, represented as a reaction type probability vector. The algorithm then predicts a product by applying a transformation that corresponds with the most probable reaction type to the reactants. In this work, we use a SMARTS transformation for the final step.}
+\caption[Summary of Reaction Prediction Method]{An overview of our method for predicting reaction type and products. A reaction fingerprint, made from concatenating the fingerprints of reactant and reagent molecules, is the inputs for a neural network that predicts the probability of 17 different reaction types, represented as a reaction type probability vector. The algorithm then predicts a product by applying a transformation that corresponds with the most probable reaction type to the reactants. In this work, we use a SMARTS transformation for the final step.}
 \label{Fig:PredictionOverview}
 \end{center}
 \end{figure}
@@ -47,6 +47,7 @@ We created a dataset of reactions of four alkylhalide reactions and twelve alken
         \hline
         Morgan  & 891 & 0.0971 & 86.0\%  & 0.1792 & 84.5\%  \\ 
         Neural  &  181 & 0.0976 & 86.0\% & 0.1340 & 85.7\% \\ 
+        \hline
     \end{tabular} 
     \caption{Accuracy and Negative Log Likelihood (NLL) Error of fingerprint and baseline methods} 
 \end{table}  
@@ -57,7 +58,7 @@ Figure \ref{fig:conf_mat} shows the confusion matrices for the baseline, neural,
 \begin{figure}[ht!]
 \begin{center}
 \includegraphics[trim=80 180 80 70,clip,width=0.9\textwidth]{confmat}
-\caption{\label{fig:conf_mat} Cross validation results for a) Baseline fingerprint, b) Morgan reaction fingerprint, and c) neural reaction fingerprint. A confusion matrix shows the average predicted probability for each reaction type. In these confusion matrices, the predicted reaction type is represented on the vertical axis, and the correct reaction type is represented on the horizantal axis. These figures were generated based on code from Schneider et al.\cite{Schneider_2015}.
+\caption[Confusion Matrix for Reaction Prediction]{\label{fig:conf_mat} Cross validation results for a) Baseline fingerprint, b) Morgan reaction fingerprint, and c) neural reaction fingerprint. A confusion matrix shows the average predicted probability for each reaction type. In these confusion matrices, the predicted reaction type is represented on the vertical axis, and the correct reaction type is represented on the horizantal axis. These figures were generated based on code from Schneider et al.\cite{Schneider_2015}.
 }
 \end{center}
 \end{figure}
@@ -69,14 +70,14 @@ Kayala et al.\cite{Kayala_2012} had previously employed organic textbook questio
 \begin{figure}
 \begin{center}
 \includegraphics[width=0.9\textwidth]{Wade_problems}
-\caption{\label{fig:Wade_problems_copy} Wade problems a) 8-47 and b) 8-48}
+\caption[Organic Chemistry Test Problems]{\label{fig:Wade_problems_copy} Wade problems a) 8-47 and b) 8-48}
 \end{center}
 \end{figure}
 
 \begin{figure}
 \begin{center}
 \includegraphics[trim=20 450 165 140,clip,width=0.9\textwidth]{results_heatmap}
-\caption{\label{fig:Wade_results} Prediction results for a) Wade Problem 8-47 and b) Wade Problem 8-48, as displayed by estimated probability of correct reaction type. Darker (greener) colors represent a higher predicted probability. Note the large amount of correct predictions in 8-47}
+\caption[Performance of Neural Network Models on Test Questions]{\label{fig:Wade_results} Prediction results for a) Wade Problem 8-47 and b) Wade Problem 8-48, as displayed by estimated probability of correct reaction type. Darker (greener) colors represent a higher predicted probability. Note the large amount of correct predictions in 8-47}
 \end{center}
 \end{figure}
 
@@ -100,7 +101,7 @@ The main limitation in the algorithm's ability to predict products despite predi
 \begin{figure}
 \begin{center}
 \includegraphics[ trim=120 180 120 100, clip,width=0.9\textwidth]{Tanimoto_scores_Wade8_47}
-\caption{\label{Fig:prod_pred_Wade847} Product predictions for Wade 8-47 questions, with Tanimoto score. The true product is the product as defined by the answer key. The major predicted product shows the product of the reaction type with the highest probability according to the Morgan fingerprint algorithm's result. The Morgan weighted score and the neural weighted score are calculated by taking an average of the Tanimoto scores over all the predicted products weighted by the probability of that reaction type which generated that product.}
+\caption[Model Prediction Results]{\label{Fig:prod_pred_Wade847} Product predictions for Wade 8-47 questions, with Tanimoto score. The true product is the product as defined by the answer key. The major predicted product shows the product of the reaction type with the highest probability according to the Morgan fingerprint algorithm's result. The Morgan weighted score and the neural weighted score are calculated by taking an average of the Tanimoto scores over all the predicted products weighted by the probability of that reaction type which generated that product.}
 \end{center}
 \end{figure}
 
@@ -133,6 +134,6 @@ Once a reaction type has been predicted by the algorithm, the SMARTS transformat
 The authors thank Rafael Gomez Bombarelli, Jacob Sanders, Steven Lopez, and Matthew Kayala for useful discussions. J.N.W. acknowledges support from the National Science Foundation Graduate Research Fellowship Program under Grant No. DGE-1144152. D.D. and A.A.-G. thank the Samsung Advanced Institute of Technology for their research support. The authors thank FAS Research computing for their computing support and computer time in the Harvard Odyssey computer cluster. All opinions, findings and conclusions expressed in this paper are the authors' and do not necessarily reflect the policies and views of NSF or SAIT.
 
 \section{Supporting Information}
-The supporting information section contains SI Table 1: Comparison of similarity of exam question reactants and reagents to training set reactants and reagents. The code and full training datasets will be made available at \url{https://github.com/jnwei/neural_reaction_fingerprint.git}.
+The supporting information section contains SI Table 1: Comparison of similarity of exam question reactants and reagents to training set reactants and reagents. The code and full training datasets are available at \url{https://github.com/jnwei/neural_reaction_fingerprint.git}.
 
 
