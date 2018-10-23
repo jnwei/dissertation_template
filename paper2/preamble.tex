@@ -1,9 +1,13 @@
 \documentclass[twocolumn,showpacs,preprintnumbers,nourl,jcp]{revtex4-1}
+\setkeys{acs}{usetitle=true}
 
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx,psfrag}
 \usepackage{dcolumn}
 \usepackage{bm,tabularx,ragged2e,booktabs,caption}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage[subrefformat=parens,labelformat=parens]{subcaption}
 \usepackage{ulem}
 \usepackage{amsmath}
 \usepackage{setspace}
@@ -18,5 +22,12 @@
 \usepackage[latin1]{inputenc}
 
 \numberwithin{equation}{section}
+
+\newcommand*\mycommand[1]{\texttt{\emph{#1}}}
+\newcommand{\sidecaption}[1]% #1 = label name
+{\raisebox{\abovecaptionskip}{\begin{subfigure}[t]{1.6em}
+  \caption[singlelinecheck=off]{}% do not center
+  \label{#1}
+\end{subfigure}}\ignorespaces}
 
 \numberwithin{equation}{section}
