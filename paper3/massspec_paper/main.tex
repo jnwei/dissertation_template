@@ -1,3 +1,50 @@
+\documentclass{article}
+\usepackage[preprint]{nips_2018}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage[font=small]{caption}
+\usepackage[font=small]{subcaption}
+\usepackage[usenames, dvipsnames]{color}
+\newcommand{\comment}[1] { \textcolor{red}{#1}}
+\newcommand{\reply}[1] { \textcolor{blue}{#1}}
+
+
+\title{Predicting Electron-Ionization Mass Spectrometry using Neural Networks}
+\author{ Jennifer N. Wei\thanks{Work done during an internship at Google} \\
+  Department of Chemistry and Chemical Biology\\
+  Harvard University\\
+  Cambridge, MA \\
+  \texttt{jenniferwei@fas.harvard.edu} 
+  \And
+  David Belanger \\
+  Google Brain \\
+  Cambridge, MA\\
+  \textt{dbelanger@google.com}
+  \And
+  Ryan P. Adams \\
+  Department of Computer Science\\
+  Princeton University\\
+  Princeton, NJ\\
+  \textt{rpa@princeton.edu}
+  \And
+  D. Sculley \\
+  Google Brain\\
+  Cambridge, MA\\
+  \textt{dsculley@google.com}
+  }
+\date{October 2018}
+
+\begin{document}
+
+\maketitle
+
+\section*{Abstract}
+When confronted with a substance of unknown identity, researchers often perform mass spectrometry on the sample and compare the observed spectrum to a library of previously-collected spectra. While popular, this approach is problematic because it will fail to identify molecules that are not in the existing library. In response, we propose to improve the library's coverage by augmenting it with synthetic spectra that are predicted using machine learning. We contribute a lightweight neural network model that quickly predicts mass spectra for molecules within 5ms, with better accuracy than previously reported machine learning models for this task. Achieving high accuracy predictions requires a novel neural network architecture that is designed to capture typical fragmentation patterns from electron ionization. We analyze the effects of our modeling innovations on library matching performance, compare our models to prior machine-learning-based work on spectrum prediction, and present analysis of strengths and weaknesses of our model on particular molecules.
+
+%To improve the span of molecules which can be identified through mass spectrometry analysis, we propose a neural network model that can be used to expand existing mass spectral libraries to cover molecules outside of the coverage. Our lightweight neural network model predicts mass spectra for molecules within 5ms with better accuracy than previously reported machine learning models for this task. We analyze the effects of similarity on the performance of the model, and observe the spectra predictions for selected molecules.
 
 \section{Introduction}
 
@@ -256,4 +303,9 @@ Furthermore, different molecular representation could be tested. The predictions
 
 The lightweight framework of NEIMS makes it possible to rapidly generate spectral predictions for large numbers of molecular candidates. This collection of predicted spectra can then be used directly in mass spectrometry software to expand the coverage of molecules which can be identified by mass spectrometry. Because the requirements of NEIMS has limited dependence to EI mass spectrometry, it likely that some of the principles used here could be extended to electrospray ionization mass spectrometry.
 
+\bibliographystyle{unsrt}
+\bibliography{references}
+
+
+\end{document}
 
