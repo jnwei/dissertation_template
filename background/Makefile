@@ -1,4 +1,4 @@
-name = paper2
+name = background 
 blddir = _build
 
 all: $(name).pdf

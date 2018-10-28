@@ -3,11 +3,10 @@
 \usepackage{amssymb,amsmath,amsfonts,amsthm}
 \usepackage{graphicx,float}
 \usepackage{booktabs,tabularx}
+\usepackage{subcaption}
 \usepackage[section]{placeins}
 \usepackage{algorithm,algorithmic}
 \usepackage{hyperref,verbatim}
-\usepackage{subcaption}
-\usepackage[subrefformat=parens,labelformat=parens]{subcaption}
 
 \usepackage[english]{babel}
 \usepackage{thmtools}
@@ -48,13 +47,6 @@
 %%%END OF FIGURE SETUP%%%
 
 \newcommand{\ang}{\text{\normalfont\AA}}
-
-\newcommand*\mycommand[1]{\texttt{\emph{#1}}}
-\newcommand{\sidecaption}[1]% #1 = label name
-{\raisebox{\abovecaptionskip}{\begin{subfigure}[t]{1.6em}
-  \caption[singlelinecheck=off]{}% do not center
-  \label{#1}
-\end{subfigure}}\ignorespaces}
 
 % Math formatting
 \usepackage[mathscr]{euscript} % alternative curly script  %eucal

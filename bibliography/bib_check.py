@@ -117,7 +117,11 @@ def check_for_no_doi(filename):
         doi = ''
         for line in entry_lines:
             if re.match('\s*doi',line) !=None:
-                doi = line.split('{')[1].split('}')[0]
+                try:
+                    doi = line.split('{')[1].split('}')[0]
+                except IndexError:
+                    print(line)
+                    continue 
             if re.match('\s*url',line)!=None:
                 url_present = True
         url_present_list.append(url_present)

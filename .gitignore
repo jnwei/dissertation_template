@@ -1,3 +1,10 @@
 _build/
 */_build/
 *pdf
+*aux
+*bbl
+*blg
+*lof
+*log
+*out
+*toc
