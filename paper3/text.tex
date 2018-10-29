@@ -64,11 +64,11 @@ We develop our model with the assumption that Eq.~\eqref{eq:stein-similarity} wi
 \begin{figure}[h]
     \centering
     \begin{subfigure}{0.8\textwidth}
-        \includegraphics[width=\textwidth, trim={1cm 2.3cm 1cm 0cm}]{./figures/baseline_reference_library.jpg}
+        \includegraphics[width=\textwidth, trim={1cm 2.3cm 1cm 0cm}]{baseline_reference_library.jpg}
         \caption{}
     \end{subfigure}
     \begin{subfigure}{0.8\textwidth}
-        \includegraphics[width=\textwidth, trim={1cm 2.3cm 1cm 0cm}]{./figures/Library_matching.jpg}
+        \includegraphics[width=\textwidth, trim={1cm 2.3cm 1cm 0cm}]{/Library_matching.jpg}
         \caption{}
     \end{subfigure}
     \caption{Library Matching Task. (a) A depiction of how query spectra are matched to a collection of reference spectra as performed by mass spectrometry software. (b) Query spectra are compared against a library comprised of spectra from the NIST 2017 Main Library and spectra predicted by our model.}
@@ -102,7 +102,7 @@ We make a few modifications to the MLP output to account for some of the physica
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\linewidth]{./figures/Model_prediction.png}
+    \includegraphics[width=0.8\linewidth]{Model_prediction.png}
     \caption[Neural Electron Ionization MS Prediction Model]{Molecular representations are passed into a multilayer perceptron to generate an initial output. This output is used to make a forward prediction starting at $\textit{m/z}=0$ and $\textit{m/z}=M$ and in reverse startin from $\textit{m/z}=M$ and ending at $\textit{m/z}=0$. A sigmoid gating is applied to the inputs as shown in Eq. \ref{eq:sigmoid_gate}}
     \label{fig:model_prediction}
 \end{figure}
@@ -138,11 +138,11 @@ To analyze the performance of the models, we trained with 240,942 spectra from t
 \begin{figure}[h]
     \centering
     \begin{subfigure}[b]{0.52\linewidth}
-        \includegraphics[width=\linewidth]{./figures/all_models_w_massfilter.png}
+        \includegraphics[width=\linewidth]{all_models_w_massfilter.png}
         \caption[Library Matching Results]{Library matching performance on different models}
     \end{subfigure}
     \begin{subfigure}[b]{0.4\linewidth}
-        \includegraphics[width=\linewidth]{./figures/recall_at_X.png}
+        \includegraphics[width=\linewidth]{recall_at_X.png}
         \caption[Recall@X Results for Different models]{Recall Results at various levels}
     \end{subfigure}
     \caption{Performance of different model architectures.}
@@ -160,7 +160,7 @@ Figure \ref{fig:MLP_improvement_spectra} shows the improvement in spectral predi
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\linewidth]{./figures/CEOCDNVZRAIOQZ-UHFFFAOYSA-N_mlp_model_spectra.png}
+    \includegraphics[width=0.8\linewidth]{CEOCDNVZRAIOQZ-UHFFFAOYSA-N_mlp_model_spectra.png}
         \caption[Sample Spectra Prediction]{Spectral Prediction with MLP forward Model (left) and MLP bidirectional Model (right). The true spectra is shown on the top, while the predicted spectra is shown inverted below.\footnotemark Note that the spectrum predicted by the bidirectional model shows fewer stray peaks than the forward model, particularly at the right hand side of the spectrum, which the reverse prediction is designed to capture.}
     \label{fig:MLP_improvement_spectra}
 \end{figure}
@@ -200,7 +200,7 @@ In terms of timing, NEIMS is able to make spectral predictions much more quickly
 
 \begin{figure}[h]
     \centering
-    \includegraphics[scale=0.4]{./figures/predicted_similarity_overall_similarity_ratio.png}
+    \includegraphics[scale=0.4]{predicted_similarity_overall_similarity_ratio.png}
         \caption[Similarity Analysis of NEIMS predicted spectra to spectra self-similarity]{Comparing the similiarity between the predicted spectrum and the ground truth spectrum to the overall similarity between spectra for the same molecule. }
     \label{fig:similarity_analysis}
 \end{figure}
@@ -225,7 +225,7 @@ Next, we measure the frequency of every ECFP bit within each set, and compare th
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.9\linewidth]{./figures/good_bad_molecules_horiz.png}
+    \includegraphics[width=0.9\linewidth]{good_bad_molecules_horiz.png}
         \caption[Sample Selection of Fingerprint Bits with High and Low Predictive Accuracy]{A selection of molecule fragments corresponding to bits with high and low performance.}
     \label{fig:good_bad_bit_figures}
 \end{figure}
@@ -236,7 +236,7 @@ The fragments from the high-performing bits often have well-defined fragmentatio
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.95\linewidth]{./figures/bit_3852_highlight_spectra_2.png}
+    \includegraphics[width=0.95\linewidth]{bit_3852_highlight_spectra_2.png}
         \caption[Spectral Prediction Examples for bit 3852]{Spectral predictions for some molecules containing bit 3852. Note the presence of a peak at \textit{m/z} = 93. This peak corresponds to the presence of the aniline ion. This peak is predicted even for the third molecule, where there is no peak at 93 in the ground truth spectra.}
     \label{fig:bit_example_spectra}
 \end{figure}
@@ -256,4 +256,5 @@ Furthermore, different molecular representation could be tested. The predictions
 
 The lightweight framework of NEIMS makes it possible to rapidly generate spectral predictions for large numbers of molecular candidates. This collection of predicted spectra can then be used directly in mass spectrometry software to expand the coverage of molecules which can be identified by mass spectrometry. Because the requirements of NEIMS has limited dependence to EI mass spectrometry, it likely that some of the principles used here could be extended to electrospray ionization mass spectrometry.
 
-
+\section{Acknowledgments}
+We thank Stephen Stein for providing access to the SDF versions of the NIST 2017 and NIST 2014 Mass Spectral Libraries, and for his useful insights. We thank Laura Castellanos for her insights and comments about the paper. We thank Steven Kearnes for the internal review, and Lucy Colwell and Michael Brenner for their enlightening conversations.
