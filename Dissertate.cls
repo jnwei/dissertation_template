@@ -224,11 +224,12 @@
 % Formatting of the title page:
 \renewcommand{\maketitle}{
 	\thispagestyle{empty}
+    \pagenumbering{gobble}
 	\vspace*{\fill}
 	\vspace{100pt}
 	\begin{center}
-%	\Huge \textcolor{SchoolColor}{\thetitle} \normalsize \\   % feel free to use the larger title size, for a long title it may break onto too many lines
-        \semiHuge \textcolor{SchoolColor}{\thetitle} \normalsize \\
+	\Huge \textcolor{SchoolColor}{\thetitle} \normalsize \\   % feel free to use the larger title size, for a long title it may break onto too many lines
+%        \semiHuge \textcolor{SchoolColor}{\thetitle} \normalsize \\
 	\vspace{100pt}
 	\textsc{a dissertation presented \\ by\\
 	\theauthor\\ to\\ The Department of \@department\\

@@ -10,14 +10,15 @@
 
 \graphicspath{{background/}{paper1/}{paper2/}{paper3/}{intro/}{future/}}
 
-\clearpage
 \input{intro/intro}
 
 \clearpage
+\part{Part I: Machine Learning and Cheminformatics Background}
 \input{background/disedit}
 
-\clearpage
-]\input{paper1/disedit}
+
+\part{Part II: Machine Learning Applications to Chemistry}
+\input{paper1/disedit}
 
 \clearpage
 \input{paper3/disedit}
@@ -31,10 +32,10 @@
 \clearpage
 
 % Bibliography:
-{
+
 \ssp % Single spacing
-%\bibliographystyle{thesis}
-\bibliographystyle{apsrev4-1}
+\bibliographystyle{thesis}
+%\bibliographystyle{apsrev4-1}
 \bibliography{bibliography_aggregate.bib}
-}
+
 \end{document}
