@@ -1,5 +1,54 @@
-\section{Introduction}
+\section{Types of Machine Learning Models} 
 
-\section{Theory}
+\subsection{Linear Regression}
 
-Write Me
+One of the most basic discriminative models is a linear regression model, a model all scientists become fluent in at a very early stage of their scientific development. Such models take in vector representations of the inputs, and apply a linear transformation to these inputs. The values in the matrix of the linear transformation are known as the parameters of the model, as shown in eq. 1:
+
+\begin{equation}
+  y = Ax + b
+\end{equation}
+
+To measure the predictive accuracy of the model, it is necessary to set an objective function. In the case of a regression task, the objective is a function of the difference between the target value and the value predicted by the model, such as a mean squared error. Then, one can adjust the parameters in order to improve the accuracy.
+
+For a linear regression model, it is possible to determine analytically what are the best parameters for fitting the input data. The objective function for a linear regression model can be written explicitly as a function of the parameters of the model and the input data points. As a result, it is possible to find the gradient of the objective function, and solve for the values of the parameters when the gradient is 0. Because this function is convex, there exists only one set parameters which will provide the smallest prediction error. An explicit calculation for the weights is shown in Section 5.1.4 of Deep Learning by Goodfellow et al. \cite{Goodfellow-et-al-2016}
+
+\subsection{Neural Networks}
+
+A linear regression model can only be used to relationships between inputs and data that are linear. In order to model relationships that are more complicated, it is necessary to either use more complicated inputs, i.e. second order terms derived from the inputs, or else, it is necessary to use a model with more parameters.
+
+A neural network model is similar similar to a linear regression model, except that a non linear transformation is applied to the output of the transformation to make the prediction. The equation for one layer of a neural network is shown below:
+
+\begin{equation}
+y = \sigma( Ax + b)
+\end{equation}
+
+where $\sigma$ represents a non-linear transformation. This non linear transformation may take many different forms. Some examples include the sigmoid transformation, or the ReLU transformation.\cite{} The purpose of the non linear transformation is to have the model capture nonlinear transformations between input and data.
+
+It is also possible to stack the transformation of a neural network on top of each other, resulting in a transformation such as the one shown below. This increases the capacity of the model to capture even more complicated relationships. 
+
+\begin{equation}
+y = \sigma( A_2 ( \sigma(A_1 x + b) + b)
+\end{equation}
+
+The above model above is said to contain two \textit{layers}. The number of nodes in this layer is determined by second dimension of $A_1$ (the first dimension of $A_2$ needs to match the input dimension).
+
+It has been shown that neural networks are universal approximators, and can be used to model any function.\cite{} However because of the non-linearities in the model function, the objective function no longer has a single global minimum, but instead contains many local minima. The result is that it is not possible to analytically solve for the set of parameters which will globally minimize the objective function.
+
+In order to find the parameters which will minimize the loss function, we must instead calculate the local gradient of the objective function with respect to the parameters in the vicinity of the current parameter values. We use backpropagation\cite{Schmidhuber_NN_Overview} to help us calculate this gradient of the objective function for the parameters at each layer. We can then adjust the parameters in the direction that minimizes the loss locally. The exact amount by which to adjust the parameters is known as the training step size. Because we update the parameters of our model using the gradient of the objective function with respect to the parameters, it is necessary to formulate the objective function so that is continuous and differentiable with respect to the parameters.
+
+\subsection{Convolutional Network Models and Recurrent Neural Network Models}
+
+Convolutional Neural Networks (CNNs) and Recurrent Neural Networks (RNN) are neural networks where the parameters of the neural network are shared over different domains of the input. For the case of CNNs, the parameters of the network are shared as the transformation is applied to each sub-block of inputs from the original training example. For the case of RNNs, these parameters are shared across time-steps, or indices from the original training example.
+
+The advantage of sharing parameters in space or in time is that parameters which activate when exposed to a certain input pattern can be activated no matter where they are found in the training example. If a standard neural network were used to model the entire input from the training example, having one parameter associated with each index from the training example, it would require much greater numbers of parameters. This would lead the model to overfit the data easily, and not be generally applicable to other sequences.
+
+Readers are referred to Chapters 9 and 10 of Goodfellow et al. for a more detailed description of these models.\cite{Goodfellow-et-all-2016}
+
+\section{Tuning the Model Parameters and Hyperparameters}
+
+When deciding on the architecture of the model, it is important to consider the number of nodes and the number of layers to include in the model. The more nodes and layers that in the model, the more complicated patterns the neural network model can describe. If a model is having difficulty modeling data for a particular task, it is said to be \textit{underfit}. This can be addressed by adding more layers and more nodes.
+
+However, when adding additional nodes and layers to a neural network model, especially on smaller datasets, it is also important to be wary of \textit{overfitting} the model. A model is said to have overfit the dataset if the parameters of the model have memorized the dataset, and cannot be used to generalize to other inputs. This occurs especially when there are more parameters in the model than there are examples in the dataset. It is possible to observe this effect by looking at the training curves of a model; if in later epochs, the training loss is significantly lower than the test loss, the model is overfit. One way of addressing this is to increase the amount of regularization on the model, either by constraining the values of the parameters, or by adding randomly zeroing out some of the parameters during training.\cite{srivastava2013improving} 
+
+The careful selection of the number nodes and layers of a neural network model is performed in a procedure called hyperparameter selection. Other hyperparameters include the training step size, the choice of non-linearity function, and the degree of dropout to use, the choice of objective function, the choice of optimizer, and several others. There are various tools available to help with the selection of hyperparameters.\cite{snoek2012practical, Google_Vizier, Bergestra_2015}
+
