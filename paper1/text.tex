@@ -66,7 +66,7 @@ Figure \ref{fig:conf_mat} shows the confusion matrices for the baseline, neural,
 
 \subsection{Performance on predicting reaction type of exam questions}
 
-Kayala et al.\cite{Kayala_2012} had previously employed organic textbook questions both as the training set and as the validation set for their algorithm, reporting 95.7\% accuracy on their training set. We similarly decided to test our algorithm on a set of textbook questions. To challenge our algorithm, we tested the performance on textbook problems that an organic chemistry student would see. We selected problems 8-47 and 8-48 from the Wade 6th edition organic chemistry textbook, copied below in Figure \ref{fig:Wade_problems_copy}.\cite{wade2013organic} The reagents listed in each problem were assigned as secondary reactants or reagents so that they matched the training set. For all prediction methods, our networks were first trained on the training set of generated reactions, using the same hyperparameters found by the cross-validation search. The similarity of the exam questions to the training set was determined by measuring the Tanimoto\cite{Bajusz_2015} distance of the fingerprints of the reactant and reagent molecules in each reactant set. The average Tanimoto score between the training set reactants and reagents and the exam set reactants and reagents is 0.433, and the highest Tanimoto score oberved between exam questions and training questions was 1.00 on 8-48c and 0.941 on 8-47a. This indicates that 8-48c was one of the training set examples. Table SI.1  show more detailed results for this Tanimoto analysis.
+Kayala et al.\cite{Kayala_2012} had previously employed organic textbook questions both as the training set and as the validation set for their algorithm, reporting 95.7\% accuracy on their training set. We similarly decided to test our algorithm on a set of textbook questions. To challenge our algorithm, we tested the performance on textbook problems that an organic chemistry student would see. We selected problems 8-47 and 8-48 from the Wade 6th edition organic chemistry textbook, copied below in Figure \ref{fig:Wade_problems_copy}\cite{wade2013organic}. The reagents listed in each problem were assigned as secondary reactants or reagents so that they matched the training set. For all prediction methods, our networks were first trained on the training set of generated reactions, using the same hyperparameters found by the cross-validation search. The similarity of the exam questions to the training set was determined by measuring the Tanimoto\cite{Bajusz_2015} distance of the fingerprints of the reactant and reagent molecules in each reactant set. The average Tanimoto score between the training set reactants and reagents and the exam set reactants and reagents is 0.433, and the highest Tanimoto score oberved between exam questions and training questions was 1.00 on 8-48c and 0.941 on 8-47a. This indicates that 8-48c was one of the training set examples. Table \ref{tab:probem_training_similarity}  show more detailed results for this Tanimoto analysis.
 
 \begin{figure}
 \begin{center}
@@ -134,7 +134,67 @@ Once a reaction type has been predicted by the algorithm, the SMARTS transformat
 \section{Acknowledgement}
 The authors thank Rafael Gomez Bombarelli, Jacob Sanders, Steven Lopez, and Matthew Kayala for useful discussions. J.N.W. acknowledges support from the National Science Foundation Graduate Research Fellowship Program under Grant No. DGE-1144152. D.D. and A.A.-G. thank the Samsung Advanced Institute of Technology for their research support. The authors thank FAS Research computing for their computing support and computer time in the Harvard Odyssey computer cluster. All opinions, findings and conclusions expressed in this paper are the authors' and do not necessarily reflect the policies and views of NSF or SAIT.
 
-\section{Supporting Information}
-The supporting information section contains SI Table 1: Comparison of similarity of exam question reactants and reagents to training set reactants and reagents. The code and full training datasets will be made available at \url{https://github.com/jnwei/neural_reaction_fingerprint.git}.
+\section{Supplementary Information}
+The code and full training datasets will be made available at \url{https://github.com/jnwei/neural_reaction_fingerprint.git}.
 
+
+%\small
+
+\begin{table}[ht]\label{tab:problem_training_similarity}
+\centering
+\caption{The Tanimoto similarity of the training set to problems Wade 8-47 and 8-48 used in the main article.} 
+\begin{tabular}{|c|c|c|}
+\hline 
+ Problem number & Average Training Set & Highest Training Set \\ 
+  & Tanimoto Similarity & Tanimoto Similarity \\ 
+\hline 
+8-47a&0.30&0.94\\
+8-47b&0.42&0.74\\
+8-47c&0.47&0.86\\
+8-47d&0.41&0.76\\
+8-47e&0.47&0.88\\
+8-47f&0.47&0.88\\
+8-47g&0.35&0.65\\
+8-47h&0.42&0.75\\
+8-47i&0.43&0.80\\
+8-47j&0.48&0.76\\
+8-47l&0.44&0.77\\
+8-47m&0.43&0.82\\
+8-47n&0.45&0.75\\
+8-47o&0.44&0.75\\
+8-47p&0.44&0.76\\
+\hline
+8-48a&0.42&0.78\\
+8-48b&0.42&0.77\\
+8-48c&0.31&1.00\\
+8-48d&0.34&0.54\\
+8-48e&0.19&0.71\\
+8-48f&0.20&0.66\\
+8-48g&0.33&0.48\\
+\hline
+\end{tabular}
+\end{table}
+
+
+\section{Current state of synthesis planning and reaction prediction with Machine Learning}
+
+The direction of using machine learning for reaction prediction has exploded over the past two years; many new methods and reviews have come out since the original publication of this work\cite{segler2018planning,coley2018machine,feng2018computational}. Reaction prediction with algorithms has regained significant attention, and I will outline some general approaches for prediction methods following the one we developed. I will discuss both synthesis planing, i.e. proposing reaction pathways for synthesizing a molecule, in addition to reaction prediction, i.e. predicting the resultant molecules given the reactants.
+
+There are a few strategies used for reaction prediction and synthesis planning, they are as follows: 
+
+\begin{itemize}
+\item \textbf{Predict reaction steps from reaction templates.} That is, one must first encode a set of reaction templates, and determine which template to use given the starting molecule(s). This is the technique used by the work described in this chapter. 
+Other methods that also use this approach include the AlphaChem model of Segler et al.\cite{segler2018planning,segler2017towards} and by the models developed by Coley et al. and Jin et al.\cite{Jin_2017_WLN, coley2017prediction} 
+
+\item \textbf{Predict reaction steps using SMILES based representations of molecules.} This approach treats the task of reaction prediction/synthesis planning as a translation task. The starting 'language' is the set of starting molecules in SMILES form, and the ending 'language' set of ending molecules, also in SMILES form.
+Examples of models using this strategy include Nam et al.\cite{Nam_2016_Translation} and also the sequence-to-sequence work of Liu et al.\cite{liu2017retrosynthetic} 
+
+\item \textbf{Predict the motions of electrons}
+There is a third strategy, which is to predict reactions steps based on the proposed motion of electrons within the molecules. This is the approach of Baldi et al. in their ReactionPredict papers. Several other papers have followed this approach, including the papers of Jin. et al. This approach is appealing for application to synthesis planning, since it would be somewhat infeasible to predict the reaction across so many steps.
+\item Predict the movement of the electrons given the starting molecules given in the reaction. This technique models the electron pushing mechanisms that organic chemistry students learn in their classes. This was the approach used by the ReactionPredict algorithms\cite{Baldi2009NoElectron,Kayala2011Learning,Chen2008SynExplorer}. More recently, groups have generated electron paths using Bayesian sampling and LSTMs to model the electron steps.\cite{bradshaw2018predicting,fooshee2018deep} This method is only been employed so far by reaction prediction methods. 
+\end{itemize}
+
+All of these appraoches enjoy high accuracy, achieving 70\% accuracy or more for their top choice in product prediction.
+
+In order to further improve the predictive accuracy of these models and have it output more data, it is necessary to obtain more experimental data. It is necesary to collect information of not only reactions that are successful, or published in patent datasets, but also collect information about reactions that had low yields, or the reaction conditions which led to poor performance. One group has already started to combine machine learning techniques with data collected from both good and bad reactions to help predict the results of reactions\cite{ahneman2018predicting, raccuglia2016machine}.
 
