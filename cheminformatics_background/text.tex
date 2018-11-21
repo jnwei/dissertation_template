@@ -1,4 +1,4 @@
-\section{Considerations for Dataset Selection}
+\section{Considerations for Dataset Selection}\label{sec:cheminf}
 
 Despite the vast amount of literature published in chemistry, there are surprisingly only a limited number of datasets available to the public. There are many considerations that must be made for selecting a dataset, and in many cases cleaning a dataset for use in machine learning. I will discuss some considerations when selecting and using a new dataset of molecules.
 
@@ -22,7 +22,7 @@ Create a linear regression model or a single layer model for predicting the outp
 
 Inevitably, for each dataset which contains new properties, it will be necessary to add a few extra data parsing steps, or add a few more sanity checks into the data processing pipeline. Visualizing the data and the predictions as often as possible is the key to identifying potential errors in the dataset.
 
-II.3 Molecule Descriptors:
+\section{Molecule Descriptors}
 
 Machine learning models require vectorized information as inputs to the model. The matrix multiplication operations which underpin the layers of a machine learning model will transform these input vectors into new features or predictions.
 
@@ -57,13 +57,8 @@ A more abstract molecule descriptor is the family of fingerprint descriptors. Fi
 
 For the case of the Morgan fingerprints/Extended Circular Fingerprints capture the local environment around each atom, as shown in Figure XX. This information records all local neighborhoods of molecule fragments which contain fewer than the maximum bond radius to consider. In order to generate a fixed length vector representation, the information about the local structure is hashed into a vector. Chapters 3 and 5 of this thesis feature applications of this fingerprint.
 
-Other fingerprints include:
+Other fingerprints vary in their focus on known functional groups within the molecule (e.g. MACCS Fingerprint) [cite: ] or their focus on three dimensional structure (e.g. Topological fingerprints) [cite:]. The precise fingerprint, or combination of fingerprints to use often depends on the application at hand. It is often useful to test multiple fingerprints, or even combinations of fingerprints, to determine which might be the best for representing molecules for the given application [cite: James's paper].
 
-\begin{itemize}
-\item \textbf{MACCS Fingerprint}: This fingerprint records the presence of each functional group in a predetermined list of functional groups
-\item \textbf{Daylight Fingerprints}
-\item \textbf{Topological Fingerprints}
-\end{itemize}
 
 \subsection{Chemical Graph theory}
 

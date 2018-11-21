@@ -2,31 +2,32 @@
 
 \subsection{Linear Regression}
 
-One of the most basic discriminative models is a linear regression model, a model all scientists become fluent in at a very early stage of their scientific development. Such models take in vector representations of the inputs, and apply a linear transformation to these inputs. The values in the matrix of the linear transformation are known as the parameters of the model, as shown in eq. 1:
+One of the most basic discriminative models is a linear regression model, a model all scientists become fluent in at a very early stage of their scientific development. Such models take in vector representations of the data input, and apply a linear transformation to this representation. The values in the matrix of the linear transformation are known as the parameters of the model, shown as $A$ in Eq. \eqref{eq:linreg}:
 
-\begin{equation}
+\begin{equation}\label{eq:linreg}
   y = Ax + b
 \end{equation}
 
-To measure the predictive accuracy of the model, it is necessary to set an objective function. In the case of a regression task, the objective is a function of the difference between the target value and the value predicted by the model, such as a mean squared error. Then, one can adjust the parameters in order to improve the accuracy.
+To measure the predictive accuracy of the model, it is necessary to set an objective function. In the case of a regression task, the objective is a function of the difference between the target value and the value predicted by the model. An example of such a function is the mean squared error. Then, one can adjust the parameters in order to improve the accuracy.
 
-For a linear regression model, it is possible to determine analytically what are the best parameters for fitting the input data. The objective function for a linear regression model can be written explicitly as a function of the parameters of the model and the input data points. As a result, it is possible to find the gradient of the objective function, and solve for the values of the parameters when the gradient is 0. Because this function is convex, there exists only one set parameters which will provide the smallest prediction error. An explicit calculation for the weights is shown in Section 5.1.4 of Deep Learning by Goodfellow et al\cite{Goodfellow-et-al-2016}.
+For a linear regression model, it is possible to determine analytically the best parameters for fitting the input data. The objective function for a linear regression model can be written explicitly as a function of the parameters of the model and the input data points. 
+As a result, it is possible to find the gradient of the objective function with respect to the parameters, and solve for the values of the parameters when the gradient is 0. Because this objective function is convex in terms of the parameters, there exists only one set parameters which will provide the smallest prediction error. An explicit calculation for the weights is shown in Section 5.1.4 of Deep Learning by Goodfellow et al\cite{Goodfellow-et-al-2016}.
 
 \subsection{Neural Networks}
 
 A linear regression model can only be used to relationships between inputs and data that are linear. In order to model relationships that are more complicated, it is necessary to either use more complicated inputs, i.e. second order terms derived from the inputs, or else, it is necessary to use a model with more parameters.
 
-A neural network model\cite{Schmidhuber_NN_Overview} is similar similar to a linear regression model, except that a non linear transformation is applied to the output of the transformation to make the prediction. The equation for one layer of a neural network is shown below:
+A neural network model\cite{Schmidhuber_NN_Overview} is similar to a linear regression model except that a non-linear function transforms the raw output to make the prediction. The equation for one layer of a neural network is shown in Eq. \eqref{eq:onelayerNN}:
 
-\begin{equation}
+\begin{equation}\label{eq:onelayerNN}
 y = \sigma( Ax + b)
 \end{equation}
 
-where $\sigma$ represents a non-linear transformation. This non linear transformation may take many different forms. Some examples include the sigmoid transformation, or the Rectified Linear Unit transformation\cite{Nair2010ReLU,lecun_efficient_backprop}. The purpose of the non linear transformation is to have the model capture nonlinear transformations between the input and the data.
+where $\sigma$ represents a non-linear transformation. This non-linear transformation may take many different forms. Some examples include the sigmoid transformation and the Rectified Linear Unit (ReLU) transformation\cite{Nair2010ReLU,lecun_efficient_backprop}. The purpose of the non-linear transformation is to capture non-linear relationships between the input and the data.
 
-It is also possible to stack the transformation of a neural network on top of each other, resulting in a transformation such as the one shown below. This increases the capacity of the model to capture even more complicated relationships. 
+It is also possible to "stack" neural network layers on top of each other, resulting in a more complex transformation such as the one shown in Eq. \eqref{eq:twolayerNN}. This increases the capacity of the model to represent even more data distributions. 
 
-\begin{equation}
+\begin{equation}\label{eq:twolayerNN}
 y = \sigma( A_2 ( \sigma(A_1 x + b) + b)
 \end{equation}
 
