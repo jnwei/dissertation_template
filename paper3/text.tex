@@ -42,10 +42,9 @@ In Section~\ref{sec:NIST14-results}, we directly compare this method with our pr
 
 
 
-\section{Methods}
 
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
     \begin{subfigure}{0.9\textwidth}
         \includegraphics[width=\textwidth]{./lib_match_baseline.png}
@@ -59,6 +58,7 @@ In Section~\ref{sec:NIST14-results}, we directly compare this method with our pr
     \label{fig:library_matching}
 \end{figure}
 
+\section{Methods}
 
 
 Our goal is to design a model that will accurately predict the EI-MS spectrum for any molecule. This will be used to produce an augmented reference library containing both predicted spectra and experimentally-measured spectra.  This task is outlined in Figure \ref{fig:library_matching}b.
@@ -114,7 +114,7 @@ where $w^f_i$ and $b^f_i$ are the model's weights and biases for forward predict
 
 The input ECFP features, from which $f(x)$ is computed, capture local structures in the molecule, so generally $f(x)$ will be more accurate in capturing the presence of small substructures of molecule $x$. Often, there is a direct correspondence between the presence of such substructures and spectral peaks with small $m/z$. For example, in Figure \ref{fig:MLP_improvement_spectra}a a peak occurs at $m/z = 35$, due to the presence of chlorine. Therefore an accurate forward prediction model will have a learned weight $w_{35}$ that will output a high intensity at $i = 35$ if there is evidence in $f(x)$ for the presence of chlorine.
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.9\linewidth]{./CEOCDNVZRAIOQZ-UHFFFAOYSA-N_mlp_model_spectra.png}
         \caption[Sample Spectra Prediction]{Spectral Prediction with MLP forward Model (a) and MLP bidirectional Model (b). For both spectra plots, the true spectrum is shown in blue on top, while the predicted spectrum is shown inverted in red. ~Note that the spectrum predicted by the bidirectional model shows fewer stray peaks than the forward model, particularly for larger \textit{m/z} values. These peaks are much easier to predict with the reverse prediction mode.}
@@ -145,7 +145,7 @@ By adding these features, we incorporate some of the physical phenomena that occ
 %In using the MLP architecture to model mass spectrometry fragmentation, our model is not directly a function of each bond in the molecule, allowing us to make quick calculations.
 %We will examine the effects of adding these adjustments in Section \ref{sec:library-matching-results}.
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
     \includegraphics[width=0.9\linewidth]{./Model_prediction.png}
     \caption[Neural Electron Ionization MS Prediction Model]{Molecular representations are passed into a multilayer perceptron to generate an initial output. This output is used to make a forward prediction starting at $\textit{m/z}=0$ and $\textit{m/z}=M$ and in reverse starting from $\textit{m/z}=M$ and ending at $\textit{m/z}=0$. A sigmoid gating is applied to the inputs as shown in Eq. \ref{eq:sigmoid_gate}}
@@ -174,7 +174,7 @@ After hyperparameter tuning using Vizier~\cite{Google_Vizier}, we found that the
 
 \subsection{Library Matching Results}
 \label{sec:library-matching-results}
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
     \begin{subfigure}[b]{0.52\linewidth}
         \includegraphics[width=\linewidth]{./all_models_w_massfilter.png}
@@ -210,7 +210,7 @@ We next compared our model's performance directly to the performance of the CFM-
 
 To compare the performance of NEIMS to that of CFM-EI, we match their setup identically. We retrain our NEIMS model on the NIST 14 dataset, and evaluate the performance using the NIST 14 replicates as the query set. For library matching, we incorporate only predicted spectra into our augmented library, and using the same modified similarity metric.
 
-\begin{table}[h]
+\begin{table}[t]
     \centering
     \begin{tabular}{c|c|c|c}
         Model & Recall@1 & Recall@10 (\%) &  Average run time (ms) \\
@@ -228,7 +228,7 @@ The library matching performance for CFM-EI and NEIMS are compared against the N
 
 \subsection{Distances between predicted and ground truth spectra}
 
-\begin{figure}[h]
+\begin{figure}[t]
     \centering
     \includegraphics[scale=0.4]{./predicted_similarity_overall_similarity_ratio.png}
         \caption[Similarity Analysis of NEIMS predicted spectra to spectra self-similarity]{Comparing the similiarity between the predicted spectrum and the ground truth spectrum to the overall similarity between spectra for the same molecule. }
