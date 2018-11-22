@@ -8,30 +8,30 @@ Virtual screening can be used to speed up this search.\cite{shoichet_2004_virtua
 
 However, even when accurate simulations are available,\cite{schneider_2010_virtual} computational molecular design is limited by the search strategy used to explore chemical space.
 Current methods either exhaustively search through a fixed library,\cite{hachmann2011harvard,bombarelli2016} or use discrete local search methods such as genetic algorithms\cite{Virshup_2013, Rupakheti_2015, Reymond_2015, Reymond_2010,kanal_2013_efficient,oboyle_2011_computational} or similar discrete interpolation techniques.\cite{van_Deursen_2007,wang2006designing,balamurugan2008exploring}
-Although these techniques have led to useful new molecules, these approaches still face large challenges. Fixed libraries are monolithic, costly to fully explore, and require hand-crafted rules to avoid impractical chemistries. The genetic generation of compounds requires the manual specification of heuristics for mutation and crossover rules. Discrete optimization methods have difficulty effectively searching large areas of chemical space because it is not possible to guide the search with gradients. 
+Although these techniques have led to useful new molecules, these approaches still face large challenges. Fixed libraries are monolithic, costly to fully explore, and require hand-crafted rules to avoid impractical chemistries. The genetic generation of compounds requires the manual specification of heuristics for mutation and crossover rules. Discrete optimization methods have difficulty effectively searching large areas of chemical space because it is not possible to guide the search with gradients.
 
-A molecular representation method that is continuous, data-driven, and can easily be converted into a machine-readable molecule has several advantages. 
+A molecular representation method that is continuous, data-driven, and can easily be converted into a machine-readable molecule has several advantages.
 First, hand-specified mutation rules are unnecessary, as new compounds can be generated automatically by modifying the vector representation and then decoding.
-Second, if we develop a differentiable model that maps from molecular representations to desirable properties, we can enable the use of gradient-based optimization to make larger jumps in chemical space. 
+Second, if we develop a differentiable model that maps from molecular representations to desirable properties, we can enable the use of gradient-based optimization to make larger jumps in chemical space.
 Gradient-based optimization can be combined with Bayesian inference methods to select compounds that are likely to be informative about the global optimum.
 Third, a data-driven representation can leverage large sets of unlabeled chemical compounds to automatically build an even larger implicit library, and then use the smaller set of labeled examples to build a regression model from the continuous representation to the desired properties.
 This lets us take advantage of large chemical databases containing millions of molecules, even when many properties are unknown for most compounds.
 
-Recent advances in machine learning have resulted in powerful probabilistic generative models that, after being trained on real examples, are able to produce realistic synthetic samples. 
-Such models usually also produce low-dimensional continuous representations of the data being modeled, allowing interpolation or analogical reasoning for 
+Recent advances in machine learning have resulted in powerful probabilistic generative models that, after being trained on real examples, are able to produce realistic synthetic samples.
+Such models usually also produce low-dimensional continuous representations of the data being modeled, allowing interpolation or analogical reasoning for
 natural images\cite{radford2015unsupervised}, text\cite{bowman2015generating}, speech, and music\cite{vandenoord_2016,Engel2017NeuralAudio}.
-We apply such generative models to chemical design, using a pair of deep networks trained as an autoencoder to convert molecules represented as SMILES strings into a continuous vector representation. In principle, this method of converting from a molecular representation to a continuous vector representation could be applied to any molecular representation, including 
-chemical fingerprints,\cite{ECFP2010} 
+We apply such generative models to chemical design, using a pair of deep networks trained as an autoencoder to convert molecules represented as SMILES strings into a continuous vector representation. In principle, this method of converting from a molecular representation to a continuous vector representation could be applied to any molecular representation, including
+chemical fingerprints,\cite{ECFP2010}
 convolutional neural networks on graphs\cite{duvenaud2015convolutional},
- similar graph-convolutions\cite{kearnes2016molecular}, and 
+ similar graph-convolutions\cite{kearnes2016molecular}, and
  Coulomb matrices \cite{Rupp_2012}. We chose to use SMILES representation because this representation can be readily converted into a molecule.
 
-Using this new continuous vector-valued representation, we experiment with the use of continuous optimization to produce novel compounds. We trained the autoencoder jointly on a property prediction task: we added a multilayer perceptron that predicts property values from the continuous representation generated by the encoder, and included the regression error in our loss function. We examined the effects that joint training had on the latent space, and tested optimization of molecules in this latent space. 
+Using this new continuous vector-valued representation, we experiment with the use of continuous optimization to produce novel compounds. We trained the autoencoder jointly on a property prediction task: we added a multilayer perceptron that predicts property values from the continuous representation generated by the encoder, and included the regression error in our loss function. We examined the effects that joint training had on the latent space, and tested optimization of molecules in this latent space.
 
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.90\textwidth]{fig1.png} 
+\includegraphics[width=0.90\textwidth]{fig1.png}
 \caption[Overview of Variational Autoencoder]{\textbf{(a)}. A diagram of the autoencoder used for molecular design, including the joint property prediction model.
 Starting from a discrete molecular representation, such as a SMILES string, the encoder network converts each molecule into a vector in the latent space, which is effectively a continuous molecular representation. Given a point in the latent space, the decoder network produces a corresponding SMILES string. Another network estimates the value of target properties associated with each molecule.
 \textbf{(b)} Gradient-based optimization in continuous latent space.
@@ -59,13 +59,13 @@ The intuition is that adding noise to the encoded molecules forces the decoder t
 Variational autoencoders with recurrent neural network encoding/decoding were proposed by Bowman \textit{et al.} in the context of written English sentences and we followed their approach closely.\cite{bowman2015generating}.
 To leverage the power of recent advances in sequence-to-sequence autoencoders for modeling text, we used the SMILES\cite{Weininger_1988} representation, a commonly-used text encoding for organic molecules.
 
-The character-by-character nature of the SMILES representation and the fragility of its internal syntax (opening and closing cycles and branches, allowed valences, etc.) can still result in the output of invalid molecules from the decoder, even with the variational constraint. 
-When converting a molecule from a latent representation to a molecule, the decoder model samples a string from the probability distribution over characters in each position generated by its final layer. As such, multiple SMILES strings are possible from a single latent space representation. We employed the open source cheminformatics suite RDKit\cite{rdkit} to validate the chemical structures of output molecules and discard invalid ones. 
+The character-by-character nature of the SMILES representation and the fragility of its internal syntax (opening and closing cycles and branches, allowed valences, etc.) can still result in the output of invalid molecules from the decoder, even with the variational constraint.
+When converting a molecule from a latent representation to a molecule, the decoder model samples a string from the probability distribution over characters in each position generated by its final layer. As such, multiple SMILES strings are possible from a single latent space representation. We employed the open source cheminformatics suite RDKit\cite{rdkit} to validate the chemical structures of output molecules and discard invalid ones.
 While it would be more efficient to limit the autoencoder to generate only valid strings, this post-processing step is lightweight and allows for greater flexibility in the autoencoder to learn the architecture of the SMILES.
 
 To enable molecular design, the chemical structures encoded in the continuous representation of the autoencoder need to be correlated with the target properties that we are seeking to optimize. Therefore, we added a model to the autoencoder that predicts the properties from the latent space representation. This autoencoder was then trained jointly on the reconstruction task and a property prediction task; an additional multi-layer perceptron (MLP) was used to predict the property from the latent vector of the encoded molecule. To propose promising new candidate molecules, we can start from the latent vector of an encoded molecule and then move in the direction most likely to improve the desired attribute. The resulting new candidate vectors can then be decoded into corresponding molecules. (Figure \ref{fig:ae_opt_diagrams}b).
 
-Two autoencoder systems were trained; one with 108,000 molecules from the QM9 dataset of molecules with fewer than 9 heavy atoms \cite{ramakrishnan2014quantum} and another with 250,000 drug-like commercially available molecules extracted at random from the ZINC database.\cite{irwin_2012_zinc}. We performed random optimization over hyperparameters specifying the deep autoencoder architecture and training, such as the choice between a recurrent or convolutional encoder, the number of hidden layers, layer sizes, regularization and learning rates. 
+Two autoencoder systems were trained; one with 108,000 molecules from the QM9 dataset of molecules with fewer than 9 heavy atoms \cite{ramakrishnan2014quantum} and another with 250,000 drug-like commercially available molecules extracted at random from the ZINC database.\cite{irwin_2012_zinc}. We performed random optimization over hyperparameters specifying the deep autoencoder architecture and training, such as the choice between a recurrent or convolutional encoder, the number of hidden layers, layer sizes, regularization and learning rates.
 The latent space representations for the QM9 and ZINC datasets had 156 dimensions and 196 dimensions respectively.
 
 \section{Results and discussion}
@@ -73,21 +73,25 @@ The latent space representations for the QM9 and ZINC datasets had 156 dimension
 
 \begin{figure}
     \centering
-	\begin{subfigure}{0.45\textwidth}
+	\begin{subfigure}{0.48\textwidth}
+       \caption{}
        \includegraphics[width=\textwidth]{fig2a_dims_unstandard_Z.png}
     \end{subfigure}
     \vspace{1em}
-	\begin{subfigure}{0.45\textwidth}
-       \includegraphics[width=\textwidth]{fig2b_Ibandronate_hist_BIG.png} 
+	\begin{subfigure}{0.48\textwidth}
+       \caption{}
+       \includegraphics[width=\textwidth]{fig2b_Ibandronate_hist_BIG.png}
     \end{subfigure}
 	\begin{subfigure}{\textwidth}
-	    \includegraphics[width=\textwidth]{fig2c_Ibuprofen_local.png} 
+       \caption{}
+	    \includegraphics[width=\textwidth]{fig2c_Ibuprofen_local.png}
     \end{subfigure}
 	\begin{subfigure}{\textwidth}
-	    \includegraphics[width=\textwidth]{fig2d_interp_nice.png}	
+       \caption{}
+	    \includegraphics[width=\textwidth]{fig2d_interp_nice.png}
     \end{subfigure}
 
-    \caption[Sampling the Latent Space of the Variational Autoencoder]{Representations of the sampling results from the variational autoencoder. (a) Kernel Density Estimation (KDE) of each latent dimension of the autoencoder, i.e. the distribution of encoded molecules along each dimension of our latent space representation; (b) Histogram of sampled molecules for a single point in the latent space, the distances of the molecules from the original query are shown by the lines corresponding to the right axis; (c) Molecules sampled near the location of ibuprofen in latent space. The values below the molecules are the distance in latent space from the decoded molecule to ibuprofen; (d) \textit{slerp} interpolation between two molecules in latent space using 6 steps of equal distance.} 
+    \caption[Sampling the Latent Space of the Variational Autoencoder]{Representations of the sampling results from the variational autoencoder. (a) Kernel Density Estimation (KDE) of each latent dimension of the autoencoder, i.e. the distribution of encoded molecules along each dimension of our latent space representation; (b) Histogram of sampled molecules for a single point in the latent space, the distances of the molecules from the original query are shown by the lines corresponding to the right axis; (c) Molecules sampled near the location of ibuprofen in latent space. The values below the molecules are the distance in latent space from the decoded molecule to ibuprofen; (d) \textit{slerp} interpolation between two molecules in latent space using 6 steps of equal distance.}
     \label{fig:interpolation_figures}
 \end{figure}
 
@@ -95,10 +99,10 @@ The latent space representations for the QM9 and ZINC datasets had 156 dimension
 
 Firstly, we analyze the fidelity of the autoencoder and the ability of the latent space to capture structural molecular features.
 Figure \ref{fig:interpolation_figures}a) shows a kernel density estimate of each dimension when encoding a set of 5000 randomly selected ZINC molecules from outside the training set. The kernel density estimate shows the distribution of datapoints along each dimension of the latent space.
- Whereas the distribution of datapoint in each individual dimension shows a slightly different mean and standard deviation, all the distributions are normal as enforced by the variational regularizer. 
+ Whereas the distribution of datapoint in each individual dimension shows a slightly different mean and standard deviation, all the distributions are normal as enforced by the variational regularizer.
 
 The variational autoencoder is a doubly-probabilistic model. In addition to the Gaussian noise added to the encoder, which can be turned off by simply sampling the mean of the encoding distribution, the decoding process is also non-deterministic, as the string output is sampled from the final layer of the decoder.
-This implies that decoding a single point in the latent space back to a string representation is stochastic. Figure \ref{fig:interpolation_figures}b) shows the probability of decoding the latent representation of a sample FDA-approved drug molecule into several different molecules. For most latent points, a prominent molecule is decoded and many other slight variations appear with lower frequencies. When these resulting SMILES are re-encoded into the latent space, the most frequent decoding also tends to be the one with the lowest Euclidean distance to the original point, indicating the latent space is indeed capturing features relevant to molecules. 
+This implies that decoding a single point in the latent space back to a string representation is stochastic. Figure \ref{fig:interpolation_figures}b) shows the probability of decoding the latent representation of a sample FDA-approved drug molecule into several different molecules. For most latent points, a prominent molecule is decoded and many other slight variations appear with lower frequencies. When these resulting SMILES are re-encoded into the latent space, the most frequent decoding also tends to be the one with the lowest Euclidean distance to the original point, indicating the latent space is indeed capturing features relevant to molecules.
 
 Figure \ref{fig:interpolation_figures}c) shows some molecules in the latent space that are close to ibuprofen. These structures become less similar with increasing distance in the latent space. When the distance approaches the average distance of molecules in the training set, the changes are more pronounced, eventually resembling random molecules likely to be sampled from the training set. SI Figure 1d) shows the distribution of distances in latent space between 50,000 random points from our ZINC training set. We estimate that we can find 30 such molecules in the locality of a molecule, i.e. 30 molecules closer to a given seed molecule from our dataset than any other molecule in our dataset. As such, we estimate that our autoencoder that was trained on 250,000 molecules from ZINC encodes ~7.5 million molecules. The probability of decoding from a point in latent space is dependent on how close this point is to the latent representations of other molecules; we observed a decoding rate of 73-79\% for points that are close to known molecules, and 4\% for randomly selected latent points.
 
@@ -107,7 +111,6 @@ A continuous latent space allows interpolation of molecules by following the sho
 \begin{table}[h]
 \small
 \centering
-%\begin{tabular}{lclclclclccc}
 \begin{tabular}{lp{1cm}lp{1.3cm}lp{1cm}lp{1cm}lp{1cm}lp{0.6cm}lp{1cm}l}
 \hline
   Source$^{a}$ & Dataset$^{b}$ &  Samples$^{c}$ &   logP$^{d}$ &      SAS$^{e}$  &   QED$^{f}$ & \% in ZINC$^{g}$ & \% in emol$^{h}$ \\
@@ -122,9 +125,9 @@ GA &     QM9 &     5470 &  0.96 (1.53) &  4.47 (1.01) &  0.53 (0.13)  &        0
  \hline
  \end{tabular}
  \caption{
-Comparison of molecule generation results to original datasets. Column a) describes the source of the molecules: data refers to the original dataset, GA refers to the genetic algorithm baseline, and VAE to our variational autoencoder trained without property prediction;  b) shows the dataset used, either ZINC or QM9, c) shows the number of samples generated for comparison, for data, this value simply reflects the size of the dataset. 
-Columns d) through f) show the mean and, in parenthesis, the standard deviation of selected properties of the generated molecules and compares that to the mean and standard deviation of properties in the original dataset. 
- d) shows the water-octanal partition coefficient (\texttt{logP})\cite{wildman_1999_prediction}; e) shows the synthetic accessibility score (\texttt{SAS})\cite{Ertl2009estimation}; and f) shows the Qualitative Estimate of Drug-likeness (\texttt{QED})\cite{bickerton2012quantifying}, ranging from 0 to 1; 
+Comparison of molecule generation results to original datasets. Column a) describes the source of the molecules: data refers to the original dataset, GA refers to the genetic algorithm baseline, and VAE to our variational autoencoder trained without property prediction;  b) shows the dataset used, either ZINC or QM9, c) shows the number of samples generated for comparison, for data, this value simply reflects the size of the dataset.
+Columns d) through f) show the mean and, in parenthesis, the standard deviation of selected properties of the generated molecules and compares that to the mean and standard deviation of properties in the original dataset.
+ d) shows the water-octanal partition coefficient (\texttt{logP})\cite{wildman_1999_prediction}; e) shows the synthetic accessibility score (\texttt{SAS})\cite{Ertl2009estimation}; and f) shows the Qualitative Estimate of Drug-likeness (\texttt{QED})\cite{bickerton2012quantifying}, ranging from 0 to 1;
 We also examine how many of the molecules generated by each method are found in two major molecule databases: ZINC in column g) and E-molecules\cite{emolecules} in column h) and compare these values against the original dataset.
 }
 \label{tab:zinc_gen_results}
@@ -133,29 +136,29 @@ We also examine how many of the molecules generated by each method are found in 
 Table \ref{tab:zinc_gen_results} compares the distribution of chemical properties in the training sets against molecules generated with a baseline genetic algorithm, and molecules generated from the variational autoencoder. In the genetic algorithm, molecules were generated with a list of hand-designed rules\cite{Virshup_2013, Rupakheti_2015, Reymond_2015, Reymond_2010,kanal_2013_efficient,oboyle_2011_computational}. This process was seeded using 1000 random molecules from the ZINC dataset, and generated over 10 iterations. For molecules generated using the variational autoencoder, we collected the set of all molecules generated from 400 decoding attempts from the latent space points encoded from the same 1000 seed molecules.
 We compare the water-octanol partition coefficient (logP), the synthetic accessibility score (SAS),\cite{Ertl2009estimation} and Quantitative Estimation of Drug-likeness (QED),\cite{bickerton2012quantifying} which ranges in value between 0 and 1, with higher values indicating that the molecule is more drug-like. SI Figure 2 shows histograms of the properties of the molecules generated by each of these approaches and compares them to the distribution of properties from the original dataset. Despite the fact that the VAE is trained purely on the SMILES strings independently of chemical properties, it is able to generate realistic-looking molecules whose features follow the intrinsic distribution of the training data. The molecules generated using the VAE show chemical properties that are more similar to the original dataset than the set of molecules generated by the genetic algorithm.
 The two rightmost columns in Table \ref{tab:zinc_gen_results} report the fraction of molecules that belong to the the 17 million drug-like compounds from which the training set was selected and how often they can be found in a library of existing organic compounds. In the case of drug-like molecules, the VAE generates molecules that follow the property distribution of the training data, but are new as the combinatorial space is extremely large and the training set is an arbitrary sub-sample. The hand-selected mutations are less able to generate new compounds while at the same time biasing the properties of the set to higher chemical complexity and decreased drug-likeness. In the case of the QM9 dataset, since the combinatorial space is smaller, the training set has more coverage and the VAE generates essentially the same population statistics as the training data.
- 
+
 \paragraph{Property prediction of molecules}
 The interest in discovering new molecules and chemicals is most often in relation to maximizing some desirable property. For this reason, we extended the the purely generative model to also predict property values from the latent representation. We trained a multi-layer perceptron jointly with the autoencoder to predict properties from the latent representation of each molecule.
 
-\begin{table}[h]
+\begin{table}[t]
 \centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\begin{tabular}{lp{1cm}lp{1cm}lp{1cm}lp{1cm}lp{1cm}lp{0.6cm}lp{1cm}lp{0.6cm}}
 \hline
-Database/Property & Mean$^{a}$   & ECFP$^{b}$    & CM$^{b}$ & GC$^{b}$ &  1-hot SMILES$^{c}$ & Encoder$^{d}$ & VAE$^{e}$   \\ 
+Database/Property & Mean$^{a}$   & ECFP$^{b}$    & CM$^{b}$ & GC$^{b}$ &  1-hot SMILES$^{c}$ & Encoder$^{d}$ & VAE$^{e}$   \\
 \hline
-ZINC250k/logP & 1.14 & 0.38 & - & 0.05 & 0.16 & 0.13 & 0.15 \\ 
-ZINC250k/QED & 0.112 & 0.045 & - & 0.017 & 0.041 & 0.037 & 0.054 \\ 
-QM9/HOMO, eV & 0.44 & 0.20 & 0.16 & 0.12 & 0.12 & 0.13 & 0.16  \\ 
+ZINC250k/logP & 1.14 & 0.38 & - & 0.05 & 0.16 & 0.13 & 0.15 \\
+ZINC250k/QED & 0.112 & 0.045 & - & 0.017 & 0.041 & 0.037 & 0.054 \\
+QM9/HOMO, eV & 0.44 & 0.20 & 0.16 & 0.12 & 0.12 & 0.13 & 0.16  \\
 QM9/LUMO, eV & 1.05 & 0.20 & 0.16 & 0.15 & 0.11 & 0.14 & 0.16  \\
-QM9/Gap, eV & 1.07 & 0.30 & 0.24 & 0.18 & 0.16 & 0.18 & 0.21  \\ 
-\hline 
-\end{tabular} 
-\caption{\small	MAE prediction error for  properties using various methods on the ZINC and QM9 datasets. 
+QM9/Gap, eV & 1.07 & 0.30 & 0.24 & 0.18 & 0.16 & 0.18 & 0.21  \\
+\hline
+\end{tabular}
+\caption{\small	MAE prediction error for  properties using various methods on the ZINC and QM9 datasets.
 a) Baseline, mean prediction; b) As implemented in Deepchem benchmark (MoleculeNet)\cite{wu2017moleculenet}, ECFP-circular fingerprints, CM-coulomb matrix, GC-graph convolutions; c) 1-hot-encoding of SMILES used as input to property predictor; d) The network trained without decoder loss; e) full variational autoencoder network trained for individual properties.}
 \label{tab:props_mae}
 \end{table}
 
-With joint training for property prediction, the distribution of molecules in the latent space is organized by property values. Figure \ref{fig:ls_figures} shows the mapping of true property values to the latent space representation of molecules, compressed into two dimensions using PCA. The latent space generated by autoencoders jointly trained with the property prediction task shows in the distribution of molecules a gradient by property values; molecules with high values are located in one region, and molecules with  low values in another. Autoencoders that were trained without the property prediction task do not show a discernible pattern with respect to property values in the resulting latent representation distribution. 
+With joint training for property prediction, the distribution of molecules in the latent space is organized by property values. Figure \ref{fig:ls_figures} shows the mapping of true property values to the latent space representation of molecules, compressed into two dimensions using PCA. The latent space generated by autoencoders jointly trained with the property prediction task shows in the distribution of molecules a gradient by property values; molecules with high values are located in one region, and molecules with  low values in another. Autoencoders that were trained without the property prediction task do not show a discernible pattern with respect to property values in the resulting latent representation distribution.
 
 While the primary purpose of adding property prediction was to organize the latent space, it is interesting to observe how the property predictor model compares with other standard models for property prediction. For a more fair comparison against other methods, we increased the size of our perceptron to two layers of 1,000 neurons. Table \ref{tab:props_mae} compares the performance of commonly used molecular embeddings and models to the VAE. Our VAE model shows that property prediction performance for electronic properties (\textit{i.e.}, orbital energies) are similar to graph convolutions for some properties; prediction accuracy could be improved with further hyperparameter optimization.
 
@@ -177,20 +180,23 @@ The objective we chose to optimize was $5 \times$ \texttt{QED} $-$ \texttt{SAS},
 
 From Figure \ref{fig:optimize_mols}a) we can see that the optimization with the Gaussian process model on the latent space representation consistently results in molecules with a higher percentile score than the two baseline search methods. Figure \ref{fig:optimize_mols}b) shows the path of one optimization from the starting molecule to the final molecule in the two-dimensional PCA representation, the final molecule ending up in the region of high objective value. Figure \ref{fig:optimize_mols}c)  shows molecules decoded along this optimization path using a Gaussian interpolation.
 
-Performing this optimization on a Gaussian process (GP) model trained with 1,000 molecules leads to a slightly wider range of molecules as shown in Figure \ref{fig:optimize_mols}a). 
+Performing this optimization on a Gaussian process (GP) model trained with 1,000 molecules leads to a slightly wider range of molecules as shown in Figure \ref{fig:optimize_mols}a).
   Since the training set is smaller, the predictive power of the GP is lower which when optimizing in latent space, and as a result optimizes to several local minima instead of a global optimization.  In cases where it is difficult to define an objective that completely describes the desirable traits of the molecule, it may be better to use this localized optimization approach to reach a larger diversity of potential molecules.
 
 \begin{figure}
     \centering
 	\begin{subfigure}{0.45\textwidth}
+      \caption{}
        \includegraphics[width=\textwidth]{fig4a_compare_violin.png}
     \end{subfigure}
     \vspace{1em}
 	\begin{subfigure}{0.45\textwidth}
-       \includegraphics[width=\textwidth]{fig4b_2k_opt.png} 
+      \caption{}
+       \includegraphics[width=\textwidth]{fig4b_2k_opt.png}
     \end{subfigure}
 	\begin{subfigure}{\textwidth}
-	    \includegraphics[width=\textwidth]{fig4c_interpolation_2.png} 
+      \caption{}
+	    \includegraphics[width=\textwidth]{fig4c_interpolation_2.png}
     \end{subfigure}
 	\caption[Optimization Results in Latent Space]{ Optimization results for the jointly trained autoencoder using $5 \times$ \texttt{QED} $-$ \texttt{SAS} as the objective function. Part (a) shows a box plot which compares the distribution of sampled molecules from normal random sampling, SMILES optimization via a common chemical transformation with a genetic algorithm, and from optimization on the trained gaussian process model with varying amounts of training points. To offset differences in computational cost between the random search and the optimization on the gaussian process model, the results of 400 iterations of random search were compared against the results of 200 iterations of optimization. This graph shows the combined results of four sets of trials. Part (b) shows the starting and ending points of several optimization runs on a PCA plot of latent space colored by the objective functon. Higlighted in black is the path illustrated in c). Part (c) shows a spherical interpolation between the actual start and finish molecules using a constant step size. The QED, SAS, and percentile score are reported for each molecule.}
     \label{fig:optimize_mols}
@@ -199,25 +205,25 @@ Performing this optimization on a Gaussian process (GP) model trained with 1,000
 
 \section{Conclusion}
 We propose a new family of methods for exploring chemical space based on continuous encodings of molecules.
-These methods eliminate the need to hand-build libraries of compounds and allow a new type of directed gradient-based search through chemical space. In our autoencoder model, we observed high fidelity in reconstruction of SMILES strings and the ability to capture characteristic features of a molecular training set. The autoencoder exhibited good predictive power when training jointly with a property prediction task, and the ability to perform gradient-based optimization of molecules in the resulting smoothed latent space. 
+These methods eliminate the need to hand-build libraries of compounds and allow a new type of directed gradient-based search through chemical space. In our autoencoder model, we observed high fidelity in reconstruction of SMILES strings and the ability to capture characteristic features of a molecular training set. The autoencoder exhibited good predictive power when training jointly with a property prediction task, and the ability to perform gradient-based optimization of molecules in the resulting smoothed latent space.
 
-There are several directions for further improvement of this approach to molecular design. 
+There are several directions for further improvement of this approach to molecular design.
 In this work, we used a text-based molecular encoding, but using a graph-based autoencoder would have several advantages.
 Forcing the decoder to produce valid SMILES strings makes the learning problem unnecessarily hard since the decoder must also implicitly learn which strings are valid SMILES.
 An autoencoder that directly outputs molecular graphs is appealing since it could explicitly address issues of graph isomorphism and the problem of strings that do not correspond to valid molecular graphs. Building an encoder which takes in molecular graphs is straightforward through the use of off-the-shelf molecular fingerprinting methods, such as ECFP\cite{ECFP2010} or a continuously-parameterized variant of ECFP such as neural molecular fingerprints.\cite{duvenaud2015convolutional}
-However, building a neural network which can output arbitrary graphs is an open problem. 
+However, building a neural network which can output arbitrary graphs is an open problem.
 
-Further extensions of this work to use a explicitly defined grammar for SMILES instead of forcing the model to learn one\cite{kusner2017grammar} or to actively learn valid sequences\cite{Janz2017,jaques2017sequence} are underway, as also is the application of adversarial networks for this task,\cite{guimaraes2017objective, Sanchez-Lengeling2017,blaschke2017application} as well as other reinforcement learning algorithms which make transformations by adding bonds or removing them.\cite{Zhou2018Optimization} 
+Further extensions of this work to use a explicitly defined grammar for SMILES instead of forcing the model to learn one\cite{kusner2017grammar} or to actively learn valid sequences\cite{Janz2017,jaques2017sequence} are underway, as also is the application of adversarial networks for this task,\cite{guimaraes2017objective, Sanchez-Lengeling2017,blaschke2017application} as well as other reinforcement learning algorithms which make transformations by adding bonds or removing them.\cite{Zhou2018Optimization}
 Several proceeding works have further explored the use of Long Short-Term Memory (LSTM) networks and recurrent networks applied to SMILES strings to generate new molecules\cite{yang2017chemts,segler2017generating} and predict the outcomes of organic chemistry reactions.\cite{liu2017retrosynthetic}
 
-The autoencoder sometimes produced molecules that are formally valid as graphs but contain moieties that are not desirable because of stability or synthetic constraints.  Examples are acid chlorides, anhydrides, cyclopentadienes, aziridines, enamines, hemiaminals, enol ethers, cyclobutadiene, and cycloheptatriene. One option is to train the autoencoder with to predict properties related to steric constraints of other structural constraints. In general, the objective function to be optimized needs to capture as many desirable traits as possible and balance them to ensure that the optimizer focuses on genuinely desirable compounds. This approach has also been tested in a few following works works.\cite{Janz2017,jaques2017sequence} 
+The autoencoder sometimes produced molecules that are formally valid as graphs but contain moieties that are not desirable because of stability or synthetic constraints.  Examples are acid chlorides, anhydrides, cyclopentadienes, aziridines, enamines, hemiaminals, enol ethers, cyclobutadiene, and cycloheptatriene. One option is to train the autoencoder with to predict properties related to steric constraints of other structural constraints. In general, the objective function to be optimized needs to capture as many desirable traits as possible and balance them to ensure that the optimizer focuses on genuinely desirable compounds. This approach has also been tested in a few following works works.\cite{Janz2017,jaques2017sequence}
 
 The results reported in this work, and its application with carefully composed objective functions, have already and will continue to influence new avenues for molecular design.
 
 \section{Methods}
 
 \paragraph{Autoencoder architecture}
-Strings of characters can be encoded into vectors using recurrent neural networks (RNNs). 
+Strings of characters can be encoded into vectors using recurrent neural networks (RNNs).
 An encoder RNN can be paired with a decoder RNN to perform sequence-to-sequence learning.\cite{sutskever2014sequence}
 We also experimented with convolutional networks for string encoding\cite{KalchbrennerACL2014} and observed improved performance.
 This is explained by the presence of repetitive, translationally-invariant substrings that correspond to chemical substructures, e.g., cycles and functional groups.
@@ -232,7 +238,7 @@ This means that the writeout operation is stochastic, and the same point in late
 The output GRU layer had one additional input, corresponding to the character sampled from the softmax output of the previous time step and was trained using teacher forcing.\cite{williams_1989} This increased the accuracy of generated SMILES strings, which resulted in higher fractions of valid SMILES strings for latent points outside the training data, but also made training more difficult, since the decoder showed a tendency to ignore the (variational) encoding and rely solely on the input sequence. The variational loss was annealed according to sigmoid schedule after 29 epochs, running for a total 120 epochs.
 
 For property prediction, two fully connected layers of 1000 neurons were used to predict properties from the latent representation, with a dropout rate of 0.20. To simply shape the latent space, a smaller perceptron of 3 layers of 67 neurons was used for the property predictor, trained with a dropout rate of 0.15. For the algorithm trained on the ZINC dataset, the objective properties include logP, QED, SAS. For the algorithm trained on the QM9 dataset, the objective properties include HOMO energies, LUMO energies, and the electronic spatial extent (R$^2$). The property prediction loss was annealed in at the same time as the variational loss.
-We used the Keras\cite{chollet_2015} and TensorFlow\cite{Tensorflow-2016} packages to build and train this model and the rdkit package for cheminformatics\cite{rdkit}. 
+We used the Keras\cite{chollet_2015} and TensorFlow\cite{Tensorflow-2016} packages to build and train this model and the rdkit package for cheminformatics\cite{rdkit}.
 
 
 \section{Acknowledgement}
@@ -247,5 +253,113 @@ We thank Dr. Anders Fr\o seth for his generous support of this work.
 \section{Supplementary Information}
 The following files are available free of charge  mol\_autoencoder\_SI.pdf
 This file contains peripheral findings including statistics on the latent space, reconstruction accuracy, training robustness with respect to dataset size, and more sampling interpolation examples.
- 
+
 The code and full training data sets will be made available at \url{https://github.com/aspuru-guzik-group/chemical_vae}
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lp{1cm}lp{1cm}lp{1cm}}
+\hline
+Dataset & ZINC & QM \\
+\hline
+Training set & 92.1 & 99.6 \\
+\hline
+Test set & 90.7 & 99.4 \\
+\hline
+ZINC & 91.0 & 1.4 \\
+\hline
+eMolecules & 83.8 & 8.8 \\
+\hline
+\end{tabular}
+\caption{Percentage of successfully decoding of latent representation after 1000 attempts for 1000 molecules from the traning set, 1000 validation molecules randomly chosen from ZINC and a 1000 validation molecules randomly chosen from eMolecules. Both VAEs perform very well for training data, and they are well transferable within molecules of the same class outside the training data, as evidence by the good validation performance of the ZINC VAE and the underperformance of the QM9 VAE against real-life small molecules.}
+\label{tab:recovery statistics}
+\end{table}[h]
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lp{1cm}lp{1cm}lp{1cm}}
+\hline
+Dataset & ZINC & QM \\
+\hline
+Decoding probability & 73.9 & 79.3 \\
+\hline
+\end{tabular}
+\caption{Percentage of 5000 randomly-selected latent points that decode to valid molecules after 1000 attempts}
+\label{tab:random_sampling_statistics}
+\end{table}
+
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lp{1cm}lp{1cm}lp{1cm}lp{1cm}}
+\hline
+Training set size &  Categorical Accuracy & logP MAE & QED MAE\\
+\hline
+225,000 & 99.3\% & 0.15 & 0.054 \\
+\hline
+175,000 & 99.0\% & 0.18 & 0.076 \\
+\hline
+125,000 & 98.5\% & 0.15 & 0.076 \\
+\hline
+25,000 & 91.6\% & 0.23 & 0.079 \\
+\hline
+\end{tabular}
+\caption{ Variational autoencoder performance over different sizes of datasets. Training and tests were performed using randomly selected molecules from the ZINC dataset, the values reported here are the scores from the validation set. The categorical accuracy reflects the percentage of characters in the output SMILES that were accurately reconstructed. Mean Absolute Errors (MAE) are reported for QED and logP properties. Performance significantly decreases if only ~$10^5$ molecules are used for training.}
+\label{tab:Accuracy_by_training_size}
+\end{table}
+
+\begin{figure}[h]
+%	\begin{subfigure}{0.45\textwidth}
+%      \caption{}
+%       \includegraphics[width=\textwidth]{fig4a_compare_violin.png}
+%    \end{subfigure}
+\centering
+  \begin{subfigure}{0.45\textwidth}
+    \caption{}
+    \includegraphics[width=\textwidth]{./mean_Z.png}
+  \end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+    \caption{}
+    \includegraphics[width=\textwidth]{./STD_Z.png}
+  \end{subfigure}
+  \vspace{1em}
+  \begin{subfigure}{0.45\textwidth}
+    \caption{}
+    \includegraphics[width=\textwidth]{./norm_Z.png}
+  \end{subfigure}
+  \begin{subfigure}{0.45\textwidth}
+    \caption{}
+    \includegraphics[width=\textwidth]{./distance_Z.png}
+  \end{subfigure}
+\caption[Latent Space Distribution Statistics]{Distribution and statistics of (a) the mean of latent space coordinates (b) standard deviation of latent space coordinates (c) norm of latent space coordinates of the encoded representation of randomly selected molecules from the ZINC validation set. (d) Distribution of Euclidean distances between random pairs of validation molecules in the ZINC VAE }
+\label{fig:ls_stats}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=0.3\columnwidth]{./logP.png}
+\includegraphics[width=0.3\columnwidth]{./SAS.png}
+\includegraphics[width=0.3\columnwidth]{./QED.png}
+
+\caption[KDE plots for distribution of logP, SAS, and QED properties]{
+Histograms and KDE plots of the distribution of properties utilized in the jointly trained autoencoder (LogP, SAS, QED). Used to further showcase results from Table 2. For each property we compare the distribution of the source data (ZINC), a generatic algorithm and the VAE.}
+\label{fig:prop_dists}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[width=\columnwidth]{./Slerp-lerp_compare.png}
+\caption[Comparison of Interpolation Methods]{Comparison of between linear and spherical interpolation paths between two randomly selected FDA approved drugs. A constant step size was used.}
+\label{fig:interpol_1}
+\end{figure}
+
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\columnwidth]{./VAE_random.png}
+\caption[Random molecules sampled from Variational Autoencoder]{Molecules decoded from randomly-sampled points in the latent space of the ZINC VAE.}
+\label{fig:random_3}
+\end{figure}
