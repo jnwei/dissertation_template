@@ -1,4 +1,4 @@
-name = paper1
+name = paper3
 blddir = _build
 
 all: $(name).pdf

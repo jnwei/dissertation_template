@@ -418,12 +418,10 @@ eprint = {
 }
 
 
-
-
 @article{duvenaud_convolutional_2015,
 title = {Convolutional Networks on Graphs for Learning Molecular Fingerprints},
 author = {Duvenaud, David K and Maclaurin, Dougal and Iparraguirre, Jorge and Bombarell, Rafael and Hirzel, Timothy and Aspuru-Guzik, Alan and Adams, Ryan P},
-booktitle = {Adv. Neural. Inf. Process. Syst. 28},
+journal = {Adv. Neural. Inf. Process. Syst. 28},
 editor = {C. Cortes and N. D. Lawrence and D. D. Lee and M. Sugiyama and R. Garnett},
 pages = {2224--2232},
 year = {2015},
@@ -441,6 +439,21 @@ url = {http://papers.nips.cc/paper/5954-convolutional-networks-on-graphs-for-lea
   year={2016},
   publisher={Springer}
 }
+
+@ARTICLE{gilmer_2017_mpnn,
+   author = {{Gilmer}, J. and {Schoenholz}, S.~S. and {Riley}, P.~F. and
+    {Vinyals}, O. and {Dahl}, G.~E.},
+    title = "{Neural Message Passing for Quantum Chemistry}",
+  journal = {ArXiv e-prints},
+archivePrefix = "arXiv",
+   eprint = {1704.01212},
+ keywords = {Computer Science - Machine Learning, I.2.6},
+     year = 2017, 
+    month = apr,
+   adsurl = {http://adsabs.harvard.edu/abs/2017arXiv170401212G},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+} 
+  
 
 % relative ranking position
 @article{kerber2006case,
@@ -484,14 +497,14 @@ url = {http://papers.nips.cc/paper/5954-convolutional-networks-on-graphs-for-lea
 @misc{rdkit_blogpost_collide_bits,
 author = {{Landrum}, G.},
 title = {Collding bits},
-url={http://rdkit.blogspot.com/2014/02/colliding-bits.html},
+Url={http://rdkit.blogspot.com/2014/02/colliding-bits.html},
 year={2014}
 }
 
 @misc{rdkit_blogpost_bit_statistics,
 author = {{Landrum}, G.},
 title = {Morgan fingerprint bit statistics},
-url={http://rdkit.blogspot.com/2016/02/morgan-fingerprint-bit-statistics.html},
+Url={http://rdkit.blogspot.com/2016/02/morgan-fingerprint-bit-statistics.html},
 year={2016}
 }
 
@@ -528,55 +541,80 @@ archivePrefix = "arXiv",
 
 @misc{rdkit,
   title = {{RDK}it: Open-source cheminformatics},
-  howpublished = {\url{http://www.rdkit.org}},
-  note = {[Online; accessed 11-April-2013]},
-  key = {RDKit, online}
+  Url = {http://www.rdkit.org},
+  note = {[Online; accessed 18-November-2018]},
+  key = {RDKit, online},
+  year = 2018
 }
 
-@misc{tensorflow2015-whitepaper,
-title={ {TensorFlow}: Large-Scale Machine Learning on Heterogeneous Systems},
-url={https://www.tensorflow.org/},
-note={Software available from tensorflow.org},
-author={
-    Mart\'{\i}n~Abadi and
-    Ashish~Agarwal and
-    Paul~Barham and
-    Eugene~Brevdo and
-    Zhifeng~Chen and
-    Craig~Citro and
-    Greg~S.~Corrado and
-    Andy~Davis and
-    Jeffrey~Dean and
-    Matthieu~Devin and
-    Sanjay~Ghemawat and
-    Ian~Goodfellow and
-    Andrew~Harp and
-    Geoffrey~Irving and
-    Michael~Isard and
-    Yangqing Jia and
-    Rafal~Jozefowicz and
-    Lukasz~Kaiser and
-    Manjunath~Kudlur and
-    Josh~Levenberg and
-    Dandelion~Man\'{e} and
-    Rajat~Monga and
-    Sherry~Moore and
-    Derek~Murray and
-    Chris~Olah and
-    Mike~Schuster and
-    Jonathon~Shlens and
-    Benoit~Steiner and
-    Ilya~Sutskever and
-    Kunal~Talwar and
-    Paul~Tucker and
-    Vincent~Vanhoucke and
-    Vijay~Vasudevan and
-    Fernanda~Vi\'{e}gas and
-    Oriol~Vinyals and
-    Pete~Warden and
-    Martin~Wattenberg and
-    Martin~Wicke and
-    Yuan~Yu and
-    Xiaoqiang~Zheng},
-  year={2015},
+@inproceedings{Tensorflow-2016,
+title = {TensorFlow: A system for large-scale machine learning},        
+author  = {Martin Abadi and Paul Barham and Jianmin Chen and Zhifeng Chen and Andy Davis and Jeffrey Dean and Matthieu Devin and Sanjay Ghemawat and Geoffrey Irving and Michael Isard and Manjunath Kudlur and Josh Levenberg and Rajat Monga and Sherry Moore and Derek G. Murray and Benoit Steiner and Paul Tucker and Vijay Vasudevan and Pete Warden and Martin Wicke and Yuan Yu and Xiaoqiang Zheng},
+year  = 2016, 
+URL = {https://www.usenix.org/system/files/conference/osdi16/osdi16-abadi.pdf},
+booktitle = {12th USENIX Symposium on Operating Systems Design and Implementation (OSDI 16)},
+pages = {265--283}
+}
+
+@proceedings{Google_Vizier,
+    title   = {Google Vizier: A Service for Black-Box Optimization},
+    editor  = {Daniel Golovin and Benjamin Solnik and Subhodeep Moitra and Greg Kochanski and John Elliot Karro and D. Sculley},
+    year    = {2017},
+    URL = {http://www.kdd.org/kdd2017/papers/view/google-vizier-a-service-for-black-box-optimization}
+}
+
+@inproceedings{baldi2013understanding,
+  title = {{Understanding dropout}},
+  author = {Pierre Baldi and Peter J. Sadowski},
+  booktitle = {Advances in Neural Information Processing Systems},
+  pages = {2814--2822},
+  year = {2013},
+}
+
+
+%% Extra refs (to include in main bib)
+
+@article{NIST_WebBook,
+  title={The NIST Chemistry WebBook: A chemical data resource on the internet},
+  author={Linstrom, Peter J and Mallard, William G},
+  journal={Journal of Chemical \& Engineering Data},
+  volume={46},
+  number={5},
+  pages={1059--1063},
+  year={2001},
+  publisher={ACS Publications}
+}
+
+
+@article{stein2012MassLibReview,
+  title={Mass spectral reference libraries: an ever-expanding resource for chemical identification},
+  author={Stein, Stephen},
+  year={2012},
+  publisher={ACS Publications},
+  journal={Analytical Chemistry},
+  volume={84},
+  pages={7274 - 7282}
+}
+
+
+@article{stein1995ChemicalSubstructureIdentification,
+  title={Chemical substructure identification by mass spectral library searching},
+  author={Stein, Stephen E},
+  journal={Journal of the American Society for Mass Spectrometry},
+  volume={6},
+  number={8},
+  pages={644--655},
+  year={1995},
+  publisher={Elsevier}
+}
+
+@article{curry1990msnet,
+  title={MSnet: A neural network which classifies mass spectra},
+  author={Curry, Bo and Rumelhart, David E},
+  journal={Tetrahedron Computer Methodology},
+  volume={3},
+  number={3-4},
+  pages={213--237},
+  year={1990},
+  publisher={Elsevier}
 }
