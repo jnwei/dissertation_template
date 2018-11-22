@@ -266,3 +266,79 @@ We thank Stephen Stein for fruitful discussions about mass spectrometry and for 
 
 \section{Supplementary information}
 The code for this work can be found at github.com/brain-research/deep-molecular-massspec
+
+
+\begin{figure}
+  \centering
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{./model_all_results_boxplot_outliers.png}
+        \caption{}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{./model_all_results_boxplot.png}
+        \caption{}
+    \end{subfigure}
+  \caption[Box Plot of Library Match Ranking Results]{
+  The boxplot for all of the library matching ranks are shown in these figures.
+  (a) shows the box plot distribution excluding outliers, while (b) shows the box plot distribution for all results including outliers.
+  }
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{./mass_prediction_rank.png}
+        \caption{}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{./mass_prediction_rank_mass_filter.png}
+        \caption{}
+    \end{subfigure}
+    \caption[Ranks with and without mass filter]{
+    Library matching ranks (y-axis) for all query spectra based on molecular mass (x-axis).
+    (a) Shows the resulting ranks without the use of the mass filter, while (b) shows the resulting ranks with the mass filter.
+    The matching rank improves significantly by using the mass filter, as indicated by the clustering of data towards the x-axis.
+    This is especially the case for those spectra that are in the center of the mass range.}
+    \label{fig:similarity_scatter_plots}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{./mainlib_predicted_overall_similarity.png}
+        \caption{}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{./main_predicted_main_replicates.png}
+        \caption{}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{./main_predicted_query_libmatch.png}
+        \caption{}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\linewidth}
+        \includegraphics[width=\linewidth]{./main_predicted_replicates_libmatch.png}
+        \caption{}
+    \end{subfigure}
+    \caption[Similarity Plots]{
+    The above shows a collection of similarity plots for each molecule in the query set.
+    The plots show a hex-bin heatmap, with Library matching rank representing the color of
+    the hexbin for all plots.
+    measuring the distances between spectra.
+    (a) shows the distribution between Overall Similarity (i.e. the similarity between
+     all recorded spectra for the same molecule) and predicted similarity.
+     The ratio between these values is shown in Figure \ref{fig:similarity_analysis}.
+    (b) compares the predicted similarity against the similarity of the main spectrum
+    to the replicates spectra for the same molecule. This gives an indication of
+    similar the predicted spectra is compared to the rest of the replicate spectra.
+    (c) shows the distribution between the Predicted Similarity (x-axis) and the
+    Query Library Match similarity. This gives an indication of how much more similar
+    the query spectrum is to the library matched spectrum compared against
+    the predicted similarity.
+    (d) compares the similarity between the predicted similarity and the similarity
+    between the replicates spectra to the library match spectra. The similarity between
+    the replicates spectra and the library matched spectra gives an indication of the noise
+    in the spectra for the molecule, and how that might have affect on the similarity matching.
+    }
+\end{figure}
