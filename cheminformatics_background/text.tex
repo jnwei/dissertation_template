@@ -12,7 +12,7 @@ A few large datasets of molecules exist, some with some predicted properties. A 
 \begin{itemize}
 \item \textbf{QM9} : A dataset for molecules with fewer than 9 heavy (non-hydrogen) atoms, containing calculated properties
 \item \textbf{ZINC} : A dataset of drug molecules. The entire dataset contains millions of molecules, but these can be filtered down to a smaller group.
-\item \textbf{NIST 17 Mass Spectral Library}: This collection of data is not available to the public, but is accessible to researchers whose institutions have access to mass spectral software. 
+\item \textbf{NIST 17 Mass Spectral Library}: This collection of data is not available to the public, but is accessible to researchers whose institutions have access to mass spectral software.
 \end{itemize}
 
 Once a dataset has been settled upon, typically it is necessary to clean the dataset. Cleaning the dataset can take on a whole range of tasks. A typical workflow to prepare a new dataset is as follows:
@@ -26,7 +26,7 @@ Inevitably, for each dataset which contains new properties, it will be necessary
 
 Machine learning models require vectorized information as inputs to the model. The matrix multiplication operations which underpin the layers of a machine learning model will transform these input vectors into new features or predictions.
 
-For many problems in machine learning, such as vision recognition, vectorizing inputs is straightforward. Images are composed of pixels, with an RGB value or greyscale associated with each pixel, and so these data inputs are already in vectorized form. Converting molecules into a vector representation is not simple. 
+For many problems in machine learning, such as vision recognition, vectorizing inputs is straightforward. Images are composed of pixels, with an RGB value or greyscale associated with each pixel, and so these data inputs are already in vectorized form. Converting molecules into a vector representation is not simple.
 
 One can think of a molecule as a graph, with the atoms as nodes and the bonds between the atoms as edges. What is the best way to vectorize information from a graph? This depends on what one wants to learn from the model. For example, if one simply wanted to 'learn' the molecular weight given a molecule, then a vector representation that includes all the atoms is sufficient.
 
@@ -53,13 +53,26 @@ The earliest machine-readable representations of molecules were developed from t
 
 Various descriptors can be derived based on these raw representations; in fact, there are several software packages which provide hundreds of these descriptors for users\cite{rdkit,mauri2006dragon}. These properties describe the partial charge of the molecule, the solvent accessible area, etc. Many of these properties can be calculated using heuristic models, e.g. Gasteiger charges. These descriptors can in turn be used to model more complicated properties that are more pertinent to the problem that one wishes to optimize\cite{mauri2006dragon}.
 
-A more abstract molecule descriptor is the family of fingerprint descriptors. Fingerprints capture local information about the molecule's structure and encode this information in a vector. The type of local information varies for each fingerprint. 
+A more abstract molecule descriptor is the family of fingerprint descriptors. Fingerprints capture local information about the molecule's structure and encode this information in a vector. The type of local information varies for each fingerprint.
 
 Morgan fingerprints/Extended Circular Fingerprints \cite{morgan1965generation,Rogers_2010_ECFP} capture the local environment around each atom, as shown in Figure\ref{fig:molecule_reps}. This information records all local neighborhoods of molecule fragments which contain fewer than the maximum bond radius to consider. In order to generate a fixed length vector representation, the information about the local structure is hashed into a vector. Chapters 3 and 5 of this thesis feature applications of this fingerprint.
 
-% \begin{figure}
-% \label{fig:molecule_reps}
-% \end{figure}
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.9\columnwidth]{molecule_reps.png}
+\caption[SMILES and Circular Fingerprint Molecular Representation]{
+SMILES and Circular Fingerprints. Color coding is added as a visual aid, colored portions of
+the representation correspond to different parts of the representation.
+In the SMILES representation, a string is used to represent the molecular graph.
+Branching regions are encoded in parenthesis (red) while cycles are encoded by starting and ending
+the cyclical region with a number (green). Lower case letters are used to represent atoms which
+are in an aromatic ring (green). The Circular fingerprint is a binary vector representation of a
+molecule. Molecular subgraphs centered around different atoms are recorded as bits in the fingerprint.
+}
+\label{fig:molecule_reps}
+\end{center}
+\end{figure}
+
 
 Other fingerprints vary in their focus on known functional groups within the molecule (e.g. MACCS Fingerprint)\cite{durant2002reoptimization} or their focus on three dimensional structure (e.g. Topological fingerprints)\cite{nilakantan1987topological}. The precise fingerprint, or combination of fingerprints to use often depends on the application at hand. It is often useful to test multiple fingerprints, or even combinations of fingerprints, to determine which might be the best for representing molecules for the given application\cite{kim2017multidk}.
 
@@ -68,19 +81,22 @@ Other fingerprints vary in their focus on known functional groups within the mol
 
 The subfield of chemical graph theory considers graph-theory based approaches to molecule representations\cite{randic2016solved}. These representations typically describe the whole molecule graph, rather than describing local fragments or representing some estimated physical properties.
 
-Some of the more common descriptors from this field include the adjacency matrix and the Coloumb matrix. Other descriptors include the eigenvalues of the adjacency matrix, path indices, and topological indices. Path indices describe the longest path between two carbon atoms present in a molecule. Topological indices depend on the valences of the constituent atoms in a bond. [cite] 
+Some of the more common descriptors from this field include the adjacency matrix and the Coulomb matrix\cite{rupp2012fast}. Other descriptors include the eigenvalues of the adjacency matrix, path indices, and topological indices. Path indices describe the longest path between two carbon atoms present in a molecule\cite{randic2016solved}.
+Topological indices depend on the valences of the constituent atoms in a bond\cite{randic2016solved}.
 
-Descriptors from this field are used less often, they do not enjoy the same level of support in open source packages as the cheminformatic descriptors. Descriptors from this field have been used to predict a wide variety of properties, including the boiling points for alkane, amino alkenes, predicting antihypertensive activity, and NMR shifts. [cite] 
+Descriptors from this field are used less often, they do not enjoy the same level of support in open source packages as the cheminformatic descriptors. Descriptors from this field have been used to predict a wide variety of properties, including the boiling points for alkane, amino alkenes, predicting antihypertensive activity, and NMR shifts\cite{randic2016solved}.
 
 \subsection{Descriptors developed with machine learning}
 
-In the last two years, researchers have now applied machine learning to propose new molecular representations. Some of these representations extend the idea of the fingerprint representation as a two dimensional method for predicting molecules. Known as graph convolutional networks, these representations collect information from smaller subgraphs of the molecular graphs, and aggregate this information into a single vector. The final output from these models is a continuous vector representation; this enables the parameters of the model itself to be tuned to predict a particular property.
+In the last two years, researchers have now applied machine learning to propose new molecular representations. Some of these representations extend the idea of the fingerprint representation as a two dimensional method for predicting molecules.
+Known as graph convolutional networks\cite{duvenaud2015convolutional,kearnes2016molecular,gilmer_2017_mpnn}, these representations collect information from smaller subgraphs of the molecular graphs, and aggregate this information into a single vector.
+The final output from these models is a continuous vector representation; this enables the parameters of the model itself to be tuned to predict a particular property.
 
-New representations have also been developed for three dimensional molecule structures.  Starting with the three dimensional geometries allows for better prediction of some properties such as energies. In addition to graph convolutional models cite[MPNN], wave transform models have been proposed for modeling the electron densities cite[Kuzminykh et al]. Wavelet scattering representations of the electron density have also been used as a rotationally invariant representation of a molecule cite[Eickenberg et al.].
+New representations have also been developed for three dimensional molecule structures.  Starting with the three dimensional geometries allows for better prediction of some properties such as energies. In addition to graph convolutional models, wave transform models have been proposed for modeling the electron densities \cite{kuzminykh20183d}.
+Wavelet scattering representations of the electron density have also been used as a rotationally invariant representation of a molecule\cite{eickenberg2017solid}.
 
 \section{Afterword}
 
-All of these descriptors have demonstrated their ability to predict energies/calculated properties for molecules. It is likely that using transfer learning techniques, it would be possible to use these models to model smaller experimental datasets. 
+All of these descriptors have demonstrated their ability to predict energies/calculated properties for molecules. It is likely that using transfer learning techniques, it would be possible to use these models to model smaller experimental datasets.
 
 However many of these machine learned representations proceeded the work in this thesis, or did not have an easily accessible implementation to use. As such, the work that is presented in the third part of this thesis uses two descriptors from cheminformatics: Morgan fingerprints and SMILES Representation.
-
