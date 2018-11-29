@@ -39,13 +39,13 @@ We created a dataset of reactions of four alkylhalide reactions and twelve alken
 \begin{table}
     \centering
     \label{tab:cross_val_results}
-    \begin{tabular}{|c|c|c|c|c|c|}%{ |K|K|L|L|L|L|}
+    %\begin{tabular}{|c|c|c|c|c|c|}
+    \begin{tabular}{cccccc}
         \hline
          \textbf{Fingerprint} & \textbf{Fingerprint} & \textbf{Train} & \textbf{Train} & \textbf{Test} &  \textbf{Test} \\
          \textbf{Method} & \textbf{Length} & \textbf{NLL} & \textbf{Accuracy} & \textbf{NLL} & \textbf{Accuracy} \\
         \hline
         Baseline & 51 & 0.2727 & 78.8\% & 2.5573 & 24.7\%  \\
-        \hline
         Morgan  & 891 & 0.0971 & 86.0\%  & 0.1792 & 84.5\%  \\
         Neural  &  181 & 0.0976 & 86.0\% & 0.1340 & 85.7\% \\
         \hline

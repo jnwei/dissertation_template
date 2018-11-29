@@ -277,7 +277,6 @@ eMolecules & 83.8 & 8.8 \\
 \centering
 \caption{Percentage of 5000 randomly-selected latent points that decode to valid molecules after 1000 attempts}
 \begin{tabular}{lp{1cm}lp{1cm}lp{1cm}}
-\hline
 Dataset & ZINC & QM \\
 \hline
 Decoding probability & 73.9 & 79.3 \\
@@ -289,7 +288,7 @@ Decoding probability & 73.9 & 79.3 \\
 \begin{table}[h]
 \centering
 \caption{ Variational autoencoder performance over different sizes of datasets. Training and tests were performed using randomly selected molecules from the ZINC dataset, the values reported here are the scores from the validation set. The categorical accuracy reflects the percentage of characters in the output SMILES that were accurately reconstructed. Mean Absolute Errors (MAE) are reported for QED and logP properties. Performance significantly decreases if only ~$10^5$ molecules are used for training.}
-\begin{tabular}{lp{1cm}lp{1cm}lp{1cm}lp{1cm}}
+\begin{tabular}{cp{2cm}cp{2cm}cp{2cm}cp{2cm}}
 \hline
 Training set size &  Categorical Accuracy & logP MAE & QED MAE\\
 \hline
