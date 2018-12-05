@@ -1,27 +1,60 @@
 \chapter{Future Directions}\label{ch:future_directions}
 \dsp
 
-The ultimate goal of all of the three models I have presented in this dissertation is to combine them all towards the development of new molecules. Variational autoencoders and other generative models can generate new molecule candidates for particular applications. Reaction prediction algorithms can be used to help screen out molecules which might be too reactive in their environment. Mass spectrometry prediction can be used by robotic workflows to verify the quantity of their content. 
+Machine learning has already begun to revolutionize the development of new materials.
+Recent successes in machine learning have lead to the development of novel blue OLED molecules\cite{bombarelli2016}.
 
-Each of these model would likely have better performance with more sophisticated molecule representations. Depending on the task, however, such representations might be more difficult to use and train. For both the reaction prediction and the mass spectrometry spectra prediction projects, we tested using graph convolutional networks. However, due to the increased number of parameters from the graph convolutional network itself, it became much more difficult to train the parameters so that the model did not overfit the solution. 
+The methods that I present in Section \ref{sec:MLinChem} are a collection of early works into the next generation of this direction.
+New molecules can be proposed from generative model, similar to those proposed in Chapter \ref{sec:autoencoder}.
+The reactivity of these molecules can be predicted with the methods presented in Chapter \ref{sec:reaction_prediction}.
+Newly synthesized molecules can be verified by with spectroscopy;
+ machine learning can be used to aid identification by expanding the coverage of existing libraries, as shown
+ in Chapter \ref{sec:massspec}.
 
-With the autoencoder project, a molecule representation which encodes the molecular graph information as a set of components rather than as a SMILES string will likely see better reconstructive accuracy. There are several fundamental issues with using a string representation for a molecule rather than a graph representation. The purpose of the variational autoencoder is to group similar objects close together in the latent space. However, SMILES strings that might be similar in terms of edit distances may not actually be close in molecular space: \textit{c1ccccc1} (benzene) will have very different properties from \textit{c1ccccn1} (pyridine). Additionally, even when grammar restraints are incorporated into the generation of the molecule string\cite{kusner2017grammar}, the model does not have a sense of which molecules are feasible in terms of their valence, and which molecules are not.
-
-While there are several methods such as graph convolutional networks for encoding from a graph, there are limited methods for decoding to a molecule based representation. One recently developed approach towards this goal is the Junction Tree Variational Autoencoder\cite{jin2018junction}. This modeling method records the molecule as a collection of pre-defined functional groups, enabling decoded vectors to be translated directly into molecular graphs. 
 
 I would like to close my dissertations with three main areas I see for improvement in the development of machine learning models for chemistry applications.
 
-\begin{enumerate}
+\textbf{Better datasets and benchmarks for testing machine learning models.}
+Standardized, publicly available datasets are needed for the community as the whole to develop new models to push the capacity of machine learning models.
+Datasets for molecules are available, and contain molecules which reflect molecules that are commonly used for drugs.
+Datasets for reactions are much more limited. There is one publicly available dataset for reactions, the USPTO dataset \cite{}.
+However this dataset contains only successful reactions, with numerous issues with the standardization of the data.
+Some works have published their datasets splits, which is very helpful for reproducing results.
+Ideally however, we would have more datasets, which would include more details of the reaction conditions, as well as examples of non-working reactions.
 
-\item Better model distribution and benchmarks. If there existed a centralized platform for distributing new models, and a standardized way of inputing molecules, this would make comparison across molecules much easier. Right now a lot of time is spent on trying reconstruct the errors of others.
+Additionally, there is a need for additional benchmarks for comparing generative models.
+It is difficult to measure the relative progress of generative models without some method of comparing the quality of these datasets.
+At the time of writing, three works have recently been released towards this goal \cite{} [Guacamol, Moses, Kristina Preuer's work].
 
-\item More standardized datasets. Experimentalists should be rewarded for sharing their data into standardized formats for machine learning. One recent effort is this NIH collaboration, which was a collabration across 20 different labs to gather some biology data. Efforts such as this make it possible for everyone to train on the same datasets and compare models directly, so that the best models can be identified. The current datasets that exist are often noisy and had to be parsed out of existing records, such as the USPTO reaction dataset.
 
-\item Better communication between machine learning experts and chemists. As demonstrated in the mass spectrometry project of Chapter 3, the best models arise when the design of the model is inspired by the physical characteristics of the problems. By accounting for the presence of ion fragments that are the residuals ion fragments of common fragmentation patterns, we were able to improve the model accuracy there considerably.
+\textbf{Better molecular representations.}
+The current representations for molecules described in Chapter \ref{sec:cheminf} have been successfully employed in machine learning models
+to predict a wide range of properties in chemistry.
+However, there are some issues with this representations.
+The SMILES representation has a few issues when combined with the variational autoencoder.
+The purpose of a variational autoencoder is to group similar objects close together in the latent space.
+However, SMILES strings that might be similar in terms of edit distances may not actually be close in molecular space:
+\textit{c1ccccc1} (benzene) will have very different properties from \textit{c1ccccn1} (pyridine).
+Additionally, even when grammar restraints are incorporated into the generation of the molecule string\cite{kusner2017grammar},
+the model does not have a sense of which molecules are feasible in terms of their valence, and which molecules are not.
 
-\end{enumerate}
+It is therefore necessary to have models which can generate graphs from a vector representation.
+Several papers have been developed towards this direction in the past year \cite{} [Msft paper, ibm paper] \cite{jin2018junction}.
+However, none of these representations are invariant to graph isomorphism. That is, a molecule which was
+formed starting from one atom will be considered different from a molecule that was formed starting from another atom.
+While it is possible to train these representations to be equivalent, it may lead to inefficiencies in the model.
+While there are several methods such as graph convolutional networks for encoding from a graph,
+there are limited methods for decoding to a molecule based representation.
 
-Such design decisions can only be reached when there is constant dialogue between the two domains. That way, we can ensure that the models that are developed in the machine learning community are both as accurate and feasible as they can be.
+\textbf{Better communication between machine learning experts and chemists.}
+As demonstrated in the mass spectrometry project of Chapter \ref{sec:massspec},
+the best models arise when the design of the model is inspired by the physical characteristics of the problems.
+By reparametrizing the output from the neural network to account for larger fragments, we were able to improve the
+performance of spectral reconstructions significantly.
+Such design decisions can only be reached when there is constant dialogue between the two domains.
+That way, we can ensure that the models that are developed in the machine learning community are both as accurate
+and feasible as they can be.
+This can also help tailor existing models to the needs of individual groups and projects.
 
-This can also help tailor models to the needs of individual groups and projects.
-
+With the development of new machine learning models and further developments in chemistry,
+it will be possible to further accelerate the discovery and development of new molecular materials.

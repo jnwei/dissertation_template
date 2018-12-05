@@ -182,16 +182,18 @@ There are a few strategies used for reaction prediction and synthesis planning, 
 
 \begin{itemize}
 \item \textbf{Predict reaction steps from reaction templates.} That is, one must first encode a set of reaction templates, and determine which template to use given the starting molecule(s). This is the technique used by the work described in this chapter.
-Other methods that also use this approach include the AlphaChem model of Segler et al.\cite{segler2018planning,segler2017towards} and by the models developed by Coley et al. and Jin et al.\cite{Jin_2017_WLN, coley2017prediction}
+Other methods that also use this approach include the AlphaChem model of Segler et al.\cite{segler2018planning,segler2017towards} and by the models developed by Coley et al. and Jin et al.\cite{Jin_2017_WLN, coley2017prediction}.
 
 \item \textbf{Predict reaction steps using SMILES based representations of molecules.} This approach treats the task of reaction prediction/synthesis planning as a translation task. The starting 'language' is the set of starting molecules in SMILES form, and the ending 'language' set of ending molecules, also in SMILES form.
 Examples of models using this strategy include Nam et al.\cite{Nam_2016_Translation} and also the sequence-to-sequence work of Liu et al.\cite{liu2017retrosynthetic}
 
 \item \textbf{Predict the motions of electrons}
-There is a third strategy, which is to predict reactions steps based on the proposed motion of electrons within the molecules. This is the approach of Baldi et al. in their ReactionPredict papers. Several other papers have followed this approach, including the papers of Jin. et al. This approach is appealing for application to synthesis planning, since it would be somewhat infeasible to predict the reaction across so many steps.
-\item Predict the movement of the electrons given the starting molecules given in the reaction. This technique models the electron pushing mechanisms that organic chemistry students learn in their classes. This was the approach used by the ReactionPredict algorithms\cite{Baldi2009NoElectron,Kayala2011Learning,Chen2008SynExplorer}. More recently, groups have generated electron paths using Bayesian sampling and LSTMs to model the electron steps.\cite{bradshaw2018predicting,fooshee2018deep} This method is only been employed so far by reaction prediction methods.
+This technique models the electron pushing mechanisms that organic chemistry students learn in their classes.
+This was the approach used by the ReactionPredict algorithms\cite{Baldi2009NoElectron,Kayala2011Learning,Chen2008SynExplorer}. More recently,
+groups have generated electron paths using Bayesian sampling and LSTMs to model the electron steps.\cite{bradshaw2018predicting,fooshee2018deep}
+This method is only been employed so far by reaction prediction methods, but not for synthesis planning methods.
 \end{itemize}
 
-All of these appraoches enjoy high accuracy, achieving 70\% accuracy or more for their top choice in product prediction.
+All of these approaches have high accuracy, achieving 70\% accuracy or more for their top choice in product prediction.
 
 In order to further improve the predictive accuracy of these models and have it output more data, it is necessary to obtain more experimental data. It is necesary to collect information of not only reactions that are successful, or published in patent datasets, but also collect information about reactions that had low yields, or the reaction conditions which led to poor performance. One group has already started to combine machine learning techniques with data collected from both good and bad reactions to help predict the results of reactions\cite{ahneman2018predicting, raccuglia2016machine}.
