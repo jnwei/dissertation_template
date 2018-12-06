@@ -17,14 +17,14 @@ I would like to close my dissertations with three main areas I see for improveme
 \textbf{Better datasets and benchmarks for testing machine learning models.}
 Standardized, publicly available datasets are needed for the community as the whole to develop new models to push the capacity of machine learning models.
 Datasets for molecules are available, and contain molecules which reflect molecules that are commonly used for drugs.
-Datasets for reactions are much more limited. There is one publicly available dataset for reactions, the USPTO dataset \cite{}.
+Datasets for reactions are much more limited. There is one publicly available dataset for reactions, the USPTO dataset \cite{lowe2012extraction}.
 However this dataset contains only successful reactions, with numerous issues with the standardization of the data.
 Some works have published their datasets splits, which is very helpful for reproducing results.
 Ideally however, we would have more datasets, which would include more details of the reaction conditions, as well as examples of non-working reactions.
 
 Additionally, there is a need for additional benchmarks for comparing generative models.
 It is difficult to measure the relative progress of generative models without some method of comparing the quality of these datasets.
-At the time of writing, three works have recently been released towards this goal \cite{} [Guacamol, Moses, Kristina Preuer's work].
+At the time of writing, three works have recently been released towards this goal \cite{Polykovskiy2018MolecularSets,Preuer2018Frechet,brown2018guacamol}.
 
 
 \textbf{Better molecular representations.}
@@ -39,7 +39,9 @@ Additionally, even when grammar restraints are incorporated into the generation 
 the model does not have a sense of which molecules are feasible in terms of their valence, and which molecules are not.
 
 It is therefore necessary to have models which can generate graphs from a vector representation.
-Several papers have been developed towards this direction in the past year \cite{} [Msft paper, ibm paper] \cite{jin2018junction}.
+Several papers have been developed towards this direction at the time of writing
+\cite{Ma2018Constrained,Liu2018Constrained,You2018GraphConvPolicy,jin2018junction}.
+
 However, none of these representations are invariant to graph isomorphism. That is, a molecule which was
 formed starting from one atom will be considered different from a molecule that was formed starting from another atom.
 While it is possible to train these representations to be equivalent, it may lead to inefficiencies in the model.
