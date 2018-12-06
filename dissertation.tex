@@ -6,10 +6,10 @@
 \dsp
 \begin{document}
 
-\frontmatter 
+\frontmatter
 
-\graphicspath{{ml_background/}{cheminformatics_background/}{paper1/}{paper2/}{paper3/}{intro/}{future/}}
-	
+\graphicspath{{ml_background/}{cheminformatics_background/}{paper1/}{paper2/}{paper3/}{intro/}{appendix/}}
+
 \input{intro/intro}
 
 \clearpage
@@ -33,12 +33,19 @@
 \input{future/future}
 
 \clearpage
+\begin{appendices}
+
+\input{appendix/text}
+\end{appendices}
+
+\clearpage
 
 % Bibliography:
 
 \ssp % Single spacing
 \bibliographystyle{thesis}
 %\bibliographystyle{apsrev4-1}
+
 \bibliography{bibliography_aggregate}
 
 \end{document}

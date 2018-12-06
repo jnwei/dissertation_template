@@ -84,7 +84,8 @@
 \setcounter{tocdepth}{2} % this defaults to 1,
 \setcounter{secnumdepth}{3} % do number sub-sub-sections
 \usepackage[titles]{tocloft}
-\usepackage[titletoc]{appendix}
+\usepackage{appendix}
+% \usepackage[titletoc,toc,page]{appendix} % Use this version if you have appendix to be separated
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
 \renewcommand{\cftchapfont}{\normalsize \scshape}
 \renewcommand\listfigurename{Listing of figures}
@@ -350,4 +351,3 @@
               \if@tempswa
                 \twocolumn
               \fi}
-
