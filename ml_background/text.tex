@@ -1,4 +1,4 @@
-\section{Types of Machine Learning Models} 
+\section{Types of Machine Learning Models}
 
 \subsection{Linear Regression}
 
@@ -10,8 +10,8 @@ One of the most basic discriminative models is a linear regression model, a mode
 
 To measure the predictive accuracy of the model, it is necessary to set an objective function. In the case of a regression task, the objective is a function of the difference between the target value and the value predicted by the model. An example of such a function is the mean squared error. Then, one can adjust the parameters in order to improve the accuracy.
 
-For a linear regression model, it is possible to determine analytically the best parameters for fitting the input data. The objective function for a linear regression model can be written explicitly as a function of the parameters of the model and the input data points. 
-As a result, it is possible to find the gradient of the objective function with respect to the parameters, and solve for the values of the parameters when the gradient is 0. Because this objective function is convex in terms of the parameters, there exists only one set parameters which will provide the smallest prediction error. An explicit calculation for the weights is shown in Section 5.1.4 of Deep Learning by Goodfellow et al\cite{Goodfellow-et-al-2016}.
+For a linear regression model, it is possible to determine analytically the best parameters for fitting the input data. The objective function for a linear regression model can be written explicitly as a function of the parameters of the model and the input data points.
+As a result, it is possible to find the gradient of the objective function with respect to the parameters, and solve for the values of the parameters when the gradient is 0. Because this objective function is convex in terms of the parameters, there exists only one set parameters which will provide the smallest prediction error. An explicit calculation for the weights is shown in Section 5.1.4 of \textit{Deep Learning by Goodfellow et al\cite{Goodfellow-et-al-2016}.
 
 \subsection{Neural Networks}
 
@@ -25,7 +25,7 @@ y = \sigma( Ax + b)
 
 where $\sigma$ represents a non-linear transformation. This non-linear transformation may take many different forms. Some examples include the sigmoid transformation and the Rectified Linear Unit (ReLU) transformation\cite{Nair2010ReLU,lecun_efficient_backprop}. The purpose of the non-linear transformation is to capture non-linear relationships between the input and the data.
 
-It is also possible to "stack" neural network layers on top of each other, resulting in a more complex transformation such as the one shown in Eq. \eqref{eq:twolayerNN}. This increases the capacity of the model to represent even more data distributions. 
+It is also possible to "stack" neural network layers on top of each other, resulting in a more complex transformation such as the one shown in Eq. \eqref{eq:twolayerNN}. This increases the capacity of the model to represent even more data distributions.
 
 \begin{equation}\label{eq:twolayerNN}
 y = \sigma( A_2 ( \sigma(A_1 x + b) + b)
@@ -35,9 +35,9 @@ The above model above is said to contain two \textit{layers}. The number of node
 
 It has been shown that neural networks are universal approximators\cite{Kolmogorov:57,hornik1989}. However because of the non-linearities in the model function, the objective function no longer has a single global minimum, but instead contains many local minima. The result is that it is not possible to analytically solve for the set of parameters which will globally minimize the objective function.
 
-In order to find the parameters which will minimize the loss function, we must instead calculate the local gradient of the objective function with respect to the parameters in the vicinity of the current parameter values. We use backpropagation\cite{lecun_efficient_backprop} to help us calculate this gradient of the objective function for the parameters at each layer. We can then adjust the parameters in the direction that minimizes the loss locally. 
-The exact process of adjusting the parameters is handled by the optimization algorithm. These optimizers control the direction of optimization based on gradients at the current step and at previous locations. Several optimization algorithsm are available, including stochastic gradient descent, RMSProp\cite{Tieleman2012}, and Adam\cite{Kingma_adam_optimizer}. 
-These optimizers have their own parameters to control the training step size and the amount of weight given to the gradient direction at the current time step. 
+In order to find the parameters which will minimize the loss function, we must instead calculate the local gradient of the objective function with respect to the parameters in the vicinity of the current parameter values. We use backpropagation\cite{lecun_efficient_backprop} to help us calculate this gradient of the objective function for the parameters at each layer. We can then adjust the parameters in the direction that minimizes the loss locally.
+The exact process of adjusting the parameters is handled by the optimization algorithm. These optimizers control the direction of optimization based on gradients at the current step and at previous locations. Several optimization algorithsm are available, including stochastic gradient descent, RMSProp\cite{Tieleman2012}, and Adam\cite{Kingma_adam_optimizer}.
+These optimizers have their own parameters to control the training step size and the amount of weight given to the gradient direction at the current time step.
 Because we update the parameters of our model using the gradient of the objective function with respect to the parameters, it is necessary to formulate the objective function so that is continuous and differentiable with respect to the parameters.
 
 \subsection{Convolutional Network Models and Recurrent Neural Network Models}
@@ -52,7 +52,6 @@ Readers are referred to Chapters 9 and 10 of Goodfellow et al. for a more detail
 
 When deciding on the architecture of the model, it is important to consider the number of nodes and the number of layers to include in the model. The more nodes and layers that in the model, the more complicated patterns the neural network model can describe. If a model is having difficulty modeling data for a particular task, it is said to be \textit{underfit}. This can be addressed by adding more layers and more nodes.
 
-However, when adding additional nodes and layers to a neural network model, especially on smaller datasets, it is also important to be wary of \textit{overfitting} the model. A model is said to have overfit the dataset if the parameters of the model have memorized the dataset, and cannot be used to generalize to other inputs. This occurs especially when there are more parameters in the model than there are examples in the dataset. It is possible to observe this effect by looking at the training curves of a model; if in later epochs, the training loss is significantly lower than the test loss, the model is overfit. One way of addressing this is to increase the amount of regularization on the model, either by constraining the values of the parameters, or by adding randomly zeroing out some of the parameters during training.\cite{srivastava2013improving} 
+However, when adding additional nodes and layers to a neural network model, especially on smaller datasets, it is also important to be wary of \textit{overfitting} the model. A model is said to have overfit the dataset if the parameters of the model have memorized the dataset, and cannot be used to generalize to other inputs. This occurs especially when there are more parameters in the model than there are examples in the dataset. It is possible to observe this effect by looking at the training curves of a model; if in later epochs, the training loss is significantly lower than the test loss, the model is overfit. One way of addressing this is to increase the amount of regularization on the model, either by constraining the values of the parameters, or by adding randomly zeroing out some of the parameters during training.\cite{srivastava2013improving}
 
 The careful selection of the number nodes and layers of a neural network model is performed in a procedure called hyperparameter selection. Other hyperparameters include the training step size, the choice of non-linearity function, and the degree of dropout to use, the choice of objective function, the choice of optimizer, and several others. There are various tools available to help with the selection of hyperparameters\cite{snoek2012practical, Google_Vizier,Bergstra_2015}.
-
